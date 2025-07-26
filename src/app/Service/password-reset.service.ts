@@ -14,7 +14,7 @@ interface TokenResponse {
   providedIn: 'root'
 })
 export class PasswordResetService {
-  private apiUrl = 'http://localhost:8087/api/password';
+  private apiUrl = 'http://192.168.107.129:8080/api/password';
 private loggedIn = new BehaviorSubject<boolean>(false);
   private currentUserRole = new BehaviorSubject<string>('');
 
