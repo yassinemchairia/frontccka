@@ -13,7 +13,7 @@ import { Router } from '@angular/router';
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:8087';
+  private apiUrl = 'http://192.168.107.129:8087';
   private loggedIn = new BehaviorSubject<boolean>(false);
   private currentUserRole = new BehaviorSubject<string>('');
   private currentUserId = new BehaviorSubject<number | null>(null);
