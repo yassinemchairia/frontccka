@@ -33,7 +33,7 @@ services:
 
   
   angular:
-    image: yassinemchairia/frontcck:latest
+    image: yassinemchairia/frontcck1:latest
     container_name: angular_app1
     hostname: angular_app
     restart: unless-stopped
