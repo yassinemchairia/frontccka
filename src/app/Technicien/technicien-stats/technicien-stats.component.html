@@ -1,0 +1,38 @@
+<div *ngIf="isLoading" class="loading">Chargement...</div>
+
+<div *ngIf="technicienStats" class="stats-container">
+  <h2>Statistiques de {{ technicienStats.nom }}</h2>
+
+  <div><strong>Spécialité:</strong> {{ technicienStats.specialite }}</div>
+  <div><strong>Nombre d'interventions:</strong> {{ technicienStats.nbInterventions }}</div>
+  <div><strong>Durée totale:</strong> {{ technicienStats.dureeTotale }}</div>
+  <div><strong>Durée moyenne:</strong> {{ technicienStats.dureeMoyenne }}</div>
+  <div><strong>Taux de réussite:</strong> {{ technicienStats.tauxReussite }}</div>
+
+  <!-- Global -->
+  <div style="margin-top: 2rem">
+    <canvas baseChart
+      [data]="{ labels: globalChartLabels, datasets: globalChartData }"
+      [options]="globalChartOptions"
+      [type]="barChartType">
+    </canvas>
+  </div>
+
+  <!-- Par priorité -->
+  <div style="margin-top: 2rem">
+    <canvas baseChart
+      [data]="{ labels: prioriteChartLabels, datasets: prioriteChartData }"
+      [options]="prioriteChartOptions"
+      [type]="barChartType">
+    </canvas>
+  </div>
+
+  <!-- Par type -->
+  <div style="margin-top: 2rem">
+    <canvas baseChart
+      [data]="{ labels: typeChartLabels, datasets: typeChartData }"
+      [options]="typeChartOptions"
+      [type]="barChartType">
+    </canvas>
+  </div>
+</div>

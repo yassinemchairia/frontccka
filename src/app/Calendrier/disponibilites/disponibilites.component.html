@@ -1,0 +1,58 @@
+<div class="filtre-specialite">
+  <label for="specialite">Filtrer par spécialité :</label>
+  <select [(ngModel)]="specialiteFilter" name="specialite" id="specialite" class="select-specialite">
+    <option value="">-- Choisir une spécialité --</option>
+    <option value="ELECTRICITE">ELECTRICITE</option>
+    <option value="CLIMATISATION">CLIMATISATION</option>
+    <option value="ENVIRONNEMENT">ENVIRONNEMENT</option>
+  </select>
+    <!-- Boutons Filtrer + Réinitialiser -->
+    <button (click)="filtrerParSpecialiteEtPeriode()" class="btn-filtrer">Filtrer</button>
+    <button (click)="reinitialiserFiltre()" class="btn-reset">Réinitialiser</button>
+  </div>
+<div *ngIf="message" class="alert alert-warning">
+  {{ message }}
+</div>
+
+<div class="calendar-controls">
+    <!-- Gauche -->
+    <div class="left-controls">
+      <button (click)="changeDate(-1)" class="btn-navigation">← Précédent</button>
+      <button (click)="goToToday()" class="btn-navigation">Aujourd'hui</button>
+      <button (click)="changeDate(1)" class="btn-navigation">Suivant →</button>
+    </div>
+  
+    <!-- Centre -->
+    <div class="center-title">
+        <h3>{{ viewDate | date: 'yyyy-MM-dd' }}</h3>
+    </div>
+  
+    <!-- Droite -->
+    <div class="right-controls">
+        <button [class.active]="view === CalendarView.Day" (click)="view = CalendarView.Day" class="btn-view">Jour</button>
+        <button [class.active]="view === CalendarView.Week" (click)="view = CalendarView.Week" class="btn-view">Semaine</button>
+        <button [class.active]="view === CalendarView.Month" (click)="view = CalendarView.Month" class="btn-view">Mois</button>
+    </div>
+</div>
+
+<!-- Calendrier -->
+<mwl-calendar-day-view
+  *ngIf="view === CalendarView.Day"
+  [viewDate]="viewDate"
+  [events]="events"
+  [refresh]="refresh">
+</mwl-calendar-day-view>
+
+<mwl-calendar-week-view
+  *ngIf="view === CalendarView.Week"
+  [viewDate]="viewDate"
+  [events]="events"
+  [refresh]="refresh">
+</mwl-calendar-week-view>
+
+<mwl-calendar-month-view
+  *ngIf="view === CalendarView.Month"
+  [viewDate]="viewDate"
+  [events]="events"
+  [refresh]="refresh">
+</mwl-calendar-month-view>

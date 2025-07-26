@@ -1,0 +1,78 @@
+<h2 mat-dialog-title>Détails de la Prédiction</h2>
+
+<mat-dialog-content class="mat-typography">
+  <div class="solution-section">
+    <h3>Solution Proposée</h3>
+    <p class="solution-text">{{ data.solution }}</p>
+  </div>
+
+  <mat-divider></mat-divider>
+
+  <div class="similar-alerts-section">
+    <h3>Alertes Similaires</h3>
+    <div *ngIf="data.similar_alertes && data.similar_alertes.length > 0; else noSimilarAlerts">
+      <div class="table-responsive">
+        <table mat-table [dataSource]="data.similar_alertes" class="mat-elevation-z2 similar-alerts-table">
+          <ng-container matColumnDef="typePanne">
+            <th mat-header-cell *matHeaderCellDef>Type de Panne</th>
+            <td mat-cell *matCellDef="let alert">{{ alert.typePanne }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="niveauGravite">
+            <th mat-header-cell *matHeaderCellDef>Gravité</th>
+            <td mat-cell *matCellDef="let alert">
+              <span [ngClass]="getSeverityClass(alert.niveauGravite)">
+                {{ alert.niveauGravite }}
+              </span>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="typeCapteur">
+            <th mat-header-cell *matHeaderCellDef>Capteur</th>
+            <td mat-cell *matCellDef="let alert">{{ alert.typeCapteur }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="emplacement">
+            <th mat-header-cell *matHeaderCellDef>Emplacement</th>
+            <td mat-cell *matCellDef="let alert">{{ alert.emplacement }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="valeurDeclenchement">
+            <th mat-header-cell *matHeaderCellDef>Valeur</th>
+            <td mat-cell *matCellDef="let alert">{{ alert.valeurDeclenchement }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="description">
+            <th mat-header-cell *matHeaderCellDef>Description</th>
+            <td mat-cell *matCellDef="let alert">{{ alert.description }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="solution">
+            <th mat-header-cell *matHeaderCellDef>Solution</th>
+            <td mat-cell *matCellDef="let alert">{{ alert.solution }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="satisfaction">
+            <th mat-header-cell *matHeaderCellDef>Satisfaction</th>
+            <td mat-cell *matCellDef="let alert">
+              <mat-icon *ngIf="alert.satisfaction === 'Satisfait'" color="primary">check_circle</mat-icon>
+              <mat-icon *ngIf="alert.satisfaction === 'Non satisfait'" color="warn">cancel</mat-icon>
+              {{ alert.satisfaction }}
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+      </div>
+    </div>
+    <ng-template #noSimilarAlerts>
+      <p class="no-alerts-message">Aucune alerte similaire trouvée.</p>
+    </ng-template>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-flat-button (click)="onCancel()">Annuler</button>
+  <button mat-flat-button color="primary" (click)="onConfirm()">Confirmer la Solution</button>
+</mat-dialog-actions>

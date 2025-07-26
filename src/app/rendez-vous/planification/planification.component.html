@@ -1,0 +1,113 @@
+<div class="container">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Planification Automatique</mat-card-title>
+    </mat-card-header>
+
+    <!-- Messages d'erreur -->
+    <div *ngIf="errorMessage" class="error-message">
+      <mat-icon>error_outline</mat-icon>
+      <span>{{ errorMessage }}</span>
+    </div>
+
+    <!-- Messages d'avertissement -->
+    <div *ngIf="warningMessage" class="warning-message">
+      <mat-icon>warning</mat-icon>
+      <span>{{ warningMessage }}</span>
+    </div>
+
+    <mat-card-content>
+      <form [formGroup]="planificationForm" (ngSubmit)="onSubmit()">
+        <div class="form-grid">
+          <!-- Description -->
+          <mat-form-field appearance="outline">
+            <mat-label>Description</mat-label>
+            <textarea matInput formControlName="description" rows="2"></textarea>
+            <mat-error *ngIf="planificationForm.get('description')?.errors">
+              Description requise (min 5 caractères)
+            </mat-error>
+          </mat-form-field>
+
+          <!-- Date Souhaitée -->
+          <div class="form-group">
+            <label for="dateSouhaitee">Date Souhaitée :</label>
+            <input id="dateSouhaitee" type="date" formControlName="dateSouhaitee" required>
+            <mat-error *ngIf="planificationForm.get('dateSouhaitee')?.errors?.required">
+              Date souhaitée requise
+            </mat-error>
+          </div>
+
+          <!-- Date Limite -->
+          <div class="form-group">
+            <label for="dateLimite">Date Limite (optionnel) :</label>
+            <input id="dateLimite" type="date" formControlName="dateLimite">
+          </div>
+
+          <!-- Spécialité -->
+          <mat-form-field appearance="outline">
+            <mat-label>Spécialité</mat-label>
+            <mat-select formControlName="specialiteRequise">
+              <mat-option *ngFor="let spec of specialites" [value]="spec">
+                {{ spec }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <!-- Nombre Techniciens -->
+          <mat-form-field appearance="outline">
+            <mat-label>Nombre Techniciens</mat-label>
+            <input matInput type="number" formControlName="nombreTechniciensRequis" min="1" max="5">
+          </mat-form-field>
+        </div>
+
+        <button mat-raised-button color="primary" type="submit" [disabled]="planificationForm.invalid || isLoading">
+          <span *ngIf="!isLoading">Générer Suggestions</span>
+          <mat-spinner *ngIf="isLoading" diameter="20"></mat-spinner>
+        </button>
+      </form>
+
+      <!-- Suggestions Table -->
+      <div *ngIf="suggestions.length > 0" class="suggestions-table">
+        <h3>Suggestions Disponibles</h3>
+        <table mat-table [dataSource]="suggestions" class="mat-elevation-z8">
+          <!-- Date Column -->
+          <ng-container matColumnDef="date">
+            <th mat-header-cell *matHeaderCellDef>Date</th>
+            <td mat-cell *matCellDef="let item">{{ item.dateRendezVous | dateArray }}</td>
+          </ng-container>
+
+          <!-- Description Column -->
+          <ng-container matColumnDef="description">
+            <th mat-header-cell *matHeaderCellDef>Description</th>
+            <td mat-cell *matCellDef="let item">{{ item.description }}</td>
+          </ng-container>
+
+          <!-- Techniciens Column -->
+          <ng-container matColumnDef="techniciens">
+            <th mat-header-cell *matHeaderCellDef>Techniciens</th>
+            <td mat-cell *matCellDef="let item">
+              <mat-chip-listbox>
+                <mat-chip *ngFor="let tech of item.techniciens">
+                  {{ tech.email }} ({{ tech.specialite }})
+                </mat-chip>
+              </mat-chip-listbox>
+            </td>
+          </ng-container>
+
+          <!-- Actions Column -->
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef>Actions</th>
+            <td mat-cell *matCellDef="let item">
+              <button mat-icon-button color="primary" (click)="confirmerRendezVous(item)" matTooltip="Confirmer">
+                <mat-icon>check</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

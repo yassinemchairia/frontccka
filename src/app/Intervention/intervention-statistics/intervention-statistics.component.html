@@ -1,0 +1,124 @@
+<div class="statistics-container">
+  <div class="header">
+    <h2>Statistiques des Interventions</h2>
+    <p class="subtitle">Vue d'ensemble des activités de maintenance</p>
+    
+    <div class="date-range-picker">
+      <div class="form-group">
+        <label for="startDate">Date de début :</label>
+        <input id="startDate" type="date" [(ngModel)]="startDate" (ngModelChange)="onDateChange()">
+      </div>
+      <div class="form-group">
+        <label for="endDate">Date de fin :</label>
+        <input id="endDate" type="date" [(ngModel)]="endDate" (ngModelChange)="onDateChange()" [min]="startDate">
+      </div>
+      <button mat-stroked-button (click)="resetDates()" class="reset-button">
+        Réinitialiser
+      </button>
+    </div>
+  </div>
+
+  <div class="stats-grid">
+    <!-- Summary Cards -->
+    <div class="summary-card">
+      <div class="summary-item">
+        <div class="summary-icon" style="background-color: #4e73df;">
+          <i class="fas fa-tools"></i>
+        </div>
+        <div class="summary-content">
+          <h3>Interventions totales</h3>
+          <p>{{ getTotalInterventions() }}</p>
+        </div>
+      </div>
+      
+      <div class="summary-item">
+        <div class="summary-icon" style="background-color: #36b9cc;">
+          <i class="fas fa-clock"></i>
+        </div>
+        <div class="summary-content">
+          <h3>Durée moyenne</h3>
+          <p [style.color]="getDurationColor()">{{ averageDuration | number:'1.1-1' }}h</p>
+        </div>
+      </div>
+      
+      <div class="summary-item">
+        <div class="summary-icon" style="background-color: #1cc88a;">
+          <i class="fas fa-check-circle"></i>
+        </div>
+        <div class="summary-content">
+          <h3>Terminées</h3>
+          <p>{{ statusStats['TERMINEE'] || 0 }}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Type Chart -->
+    <div class="chart-card">
+      <div class="chart-header">
+        <h3>Répartition par type</h3>
+      </div>
+      <div class="chart-container">
+        <canvas baseChart 
+          [data]="typeChartData" 
+          [type]="'doughnut'" 
+          [options]="chartOptions">
+        </canvas>
+      </div>
+    </div>
+
+    <!-- Status Chart -->
+    <div class="chart-card">
+      <div class="chart-header">
+        <h3>Statut des interventions</h3>
+      </div>
+      <div class="chart-container">
+        <canvas baseChart 
+          [data]="statusChartData" 
+          [type]="'doughnut'" 
+          [options]="chartOptions">
+        </canvas>
+      </div>
+    </div>
+
+    <!-- Priority Chart -->
+    <div class="chart-card full-width">
+      <div class="chart-header">
+        <h3>Interventions par priorité</h3>
+      </div>
+      <div class="chart-container">
+        <canvas baseChart 
+          [data]="priorityChartData" 
+          [type]="'bar'" 
+          [options]="barChartOptions">
+        </canvas>
+      </div>
+    </div>
+
+    <!-- Detailed Stats -->
+    <div class="details-card">
+      <h3>Détails des statistiques</h3>
+      
+      <div class="detail-section">
+        <h4>Par type</h4>
+        <div class="detail-item" *ngFor="let key of objectKeys(typeStats)">
+          <span class="detail-label">{{ formatEnum(key) }}</span>
+          <span class="detail-value">{{ typeStats[key] }}</span>
+          <div class="progress-bar">
+            <div class="progress-fill" [style.width.%]="(typeStats[key] / getTotalInterventions()) * 100"></div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="detail-section">
+        <h4>Par priorité</h4>
+        <div class="detail-item" *ngFor="let key of objectKeys(priorityStats)">
+          <span class="detail-label">{{ formatEnum(key) }}</span>
+          <span class="detail-value">{{ priorityStats[key] }}</span>
+          <div class="progress-bar">
+            <div class="progress-fill" [style.width.%]="(priorityStats[key] / getTotalInterventions()) * 100"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

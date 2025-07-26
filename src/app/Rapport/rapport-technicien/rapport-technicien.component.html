@@ -1,0 +1,35 @@
+<div class="rapport-container">
+  <h2>Mes Rapports</h2>
+
+  <!-- Message d'information -->
+  <div *ngIf="message" class="alert alert-info">
+    {{ message }}
+  </div>
+
+  <!-- Liste des rapports -->
+  <ul *ngIf="rapports.length > 0; else aucunResultat">
+    <li *ngFor="let rapport of rapports" class="rapport-item">
+      <div class="info-line">
+        <strong>Détails :</strong>
+        <span>{{ rapport.details }}</span>
+      </div>
+      <div class="info-line">
+        <strong>Coût de l'intervention :</strong>
+        <span>{{ rapport.coutIntervention | currency:'EUR' }}</span>
+      </div>
+      <div class="info-line">
+        <strong>Satisfaction :</strong>
+        <span class="satisfaction">
+          <i *ngFor="let i of [1,2,3,4,5]" 
+             class="fas fa-star" 
+             [ngClass]="{'filled': i <= rapport.satisfaction}"></i>
+        </span>
+      </div>
+      <hr />
+    </li>
+  </ul>
+
+  <ng-template #aucunResultat>
+    <p class="no-results">Aucun rapport trouvé pour cet utilisateur.</p>
+  </ng-template>
+</div>

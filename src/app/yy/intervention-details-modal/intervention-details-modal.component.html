@@ -1,0 +1,16 @@
+<p>intervention-details-modal works!</p>
+<div class="modal-content">
+  <h2>Intervention Details</h2>
+  <p><strong>Intervention ID:</strong> {{ data.idInterv }}</p>
+  <p><strong>Alert ID:</strong> {{ data.alerteId }}</p>
+  <p><strong>Start Date:</strong> {{ data.dateDebut | date:'medium' }}</p>
+  <p><strong>End Date:</strong> {{ data.dateFin | date:'medium' }}</p>
+  <p><strong>Status:</strong> {{ data.statut }}</p>
+  <p><strong>Type:</strong> {{ data.typeIntervention }}</p>
+  <p><strong>Priority:</strong> {{ data.priorite }}</p>
+  <p><strong>Solution:</strong> {{ data.solution || 'N/A' }}</p>
+  <p><strong>Satisfaction:</strong> {{ data.satisfaction || 'N/A' }}</p>
+  <div class="modal-actions">
+    <button mat-raised-button color="primary" (click)="onClose()">Close</button>
+  </div>
+</div>

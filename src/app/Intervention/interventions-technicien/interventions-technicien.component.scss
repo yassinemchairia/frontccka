@@ -1,0 +1,168 @@
+// Variables de couleur
+$primary-color: #4361ee;
+$secondary-color: #3f37c9;
+$accent-color: #4cc9f0;
+$success-color: #4ad66d;
+$warning-color: #f8961e;
+$danger-color: #f94144;
+$light-color: #f8f9fa;
+$dark-color: #212529;
+
+// Mixin pour les animations
+@mixin fade-in($duration: 0.5s) {
+  animation: fadeIn $duration ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.03); }
+  100% { transform: scale(1); }
+}
+
+.container {
+  padding: 0 15px;
+  max-width: 1200px;
+  margin: 0 auto;
+  @include fade-in(0.8s);
+
+  h3 {
+    color: $primary-color;
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    font-weight: 600;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+    position: relative;
+    padding-bottom: 0.5rem;
+    
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100px;
+      height: 4px;
+      background: linear-gradient(90deg, $primary-color, $accent-color);
+      border-radius: 2px;
+    }
+  }
+
+  .table {
+    width: 100%;
+    margin-bottom: 2rem;
+    color: $dark-color;
+    border-collapse: separate;
+    border-spacing: 0;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    border-radius: 10px;
+    overflow: hidden;
+    @include fade-in(1s);
+
+    &.table-bordered {
+      border: none;
+
+      th, td {
+        border: none;
+        position: relative;
+        
+        &::after {
+          content: '';
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          width: 100%;
+          height: 1px;
+          background: linear-gradient(90deg, transparent, rgba($primary-color, 0.3), transparent);
+        }
+      }
+    }
+
+    thead {
+      &.table-light {
+        background: linear-gradient(135deg, $primary-color, $secondary-color);
+        
+        th {
+          color: white;
+          font-weight: 500;
+          letter-spacing: 0.5px;
+          padding: 1.2rem 0.75rem;
+          text-transform: uppercase;
+          font-size: 0.85rem;
+          
+          &:first-child {
+            border-top-left-radius: 10px;
+          }
+          
+          &:last-child {
+            border-top-right-radius: 10px;
+          }
+        }
+      }
+    }
+
+    tbody {
+      tr {
+        transition: all 0.3s ease;
+        background-color: white;
+        
+        &:nth-of-type(even) {
+          background-color: rgba($accent-color, 0.05);
+        }
+
+        &:hover {
+          background-color: rgba($primary-color, 0.08);
+          transform: translateX(5px);
+          box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+          
+          td {
+            color: $secondary-color;
+          }
+        }
+
+        td {
+          padding: 1.2rem 0.75rem;
+          transition: all 0.3s ease;
+          
+          &:first-child {
+            font-weight: 500;
+            color: $primary-color;
+          }
+        }
+      }
+    }
+  }
+
+  p {
+    color: $danger-color;
+    font-size: 1.1rem;
+    margin-top: 2rem;
+    padding: 1rem;
+    background-color: rgba($danger-color, 0.1);
+    border-left: 4px solid $danger-color;
+    border-radius: 0 4px 4px 0;
+    animation: pulse 2s infinite;
+  }
+}
+
+// Effet au chargement
+@keyframes tableLoad {
+  0% { opacity: 0; transform: translateY(20px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+.table-loaded {
+  animation: tableLoad 0.8s ease-out forwards;
+}
+
+// Classes utilitaires
+.mt-3 {
+  margin-top: 1.5rem !important;
+}
+
+.mt-4 {
+  margin-top: 2.5rem !important;
+}

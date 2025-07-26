@@ -1,0 +1,100 @@
+<nb-card class="modern-notifications-card">
+  <nb-card-header>
+    <div class="header-content">
+      <h2 class="card-title">
+        <nb-icon icon="bell-outline" pack="eva" class="title-icon"></nb-icon>
+        Centre de Notifications
+        <span *ngIf="currentUserId" class="user-id-badge">
+          
+        </span>
+      </h2>
+      <div class="header-controls">
+        <nb-select
+          placeholder="Filtrer par type"
+          [(selected)]="selectedType"
+          (selectedChange)="onTypeFilterChange($event)"
+          class="type-filter-select"
+          outline
+        >
+          <nb-option [value]="null">Tous les types</nb-option>
+          <nb-option *ngFor="let type of notificationTypes" [value]="type">
+            {{ type }}
+          </nb-option>
+        </nb-select>
+        <button nbButton status="basic" (click)="loadNotifications()" class="refresh-button" outline>
+          <nb-icon icon="sync-outline"></nb-icon>
+        </button>
+      </div>
+    </div>
+  </nb-card-header>
+
+  <nb-card-body>
+    <div *ngIf="isLoading" class="loader-container">
+      <nb-spinner status="primary"></nb-spinner>
+      <p>Chargement des notifications en cours...</p>
+    </div>
+
+    <div *ngIf="!isLoading && filteredNotifications.length === 0" class="empty-state">
+      <nb-icon icon="bell-off-outline" pack="eva" class="empty-icon"></nb-icon>
+      <p>Aucune notification pour le moment. Tout est calme ici !</p>
+    </div>
+
+    <nb-list *ngIf="!isLoading && filteredNotifications.length > 0" class="notification-list">
+      <nb-list-item *ngFor="let notification of paginatedNotifications"
+                    class="notification-item"
+                    [class.unread]="!notification.isRead"
+                    [class.read]="notification.isRead">
+        <div class="notification-icon-wrapper">
+          <nb-icon [icon]="getNotificationIcon(notification.type)" [status]="getNotificationStatus(notification.type)"></nb-icon>
+        </div>
+        <div class="notification-content">
+          <div class="notification-header">
+            <span class="notification-type-badge" [class.new-notification]="!notification.isRead">{{ notification.type }}</span>
+            <span class="notification-date">
+              {{ notification.createdAt | date:'short' }}
+            </span>
+          </div>
+          <p class="notification-message">{{ notification.message }}</p>
+        </div>
+        <div class="notification-actions">
+          <button *ngIf="!notification.isRead"
+                  nbButton
+                  size="small"
+                  status="info"
+                  ghost
+                  shape="round"
+                  (click)="markAsRead(notification.idNotification)"
+                  class="mark-read-button">
+            Marquer comme lu
+            <nb-icon icon="done-all-outline"></nb-icon>
+          </button>
+          <nb-icon *ngIf="notification.isRead" icon="checkmark-circle-2-outline" status="success" class="read-indicator"></nb-icon>
+        </div>
+      </nb-list-item>
+    </nb-list>
+
+    <div *ngIf="!isLoading && totalPages > 1" class="pagination-container">
+      <button nbButton
+              status="basic"
+              (click)="changePage(currentPage - 1)"
+              [disabled]="currentPage === 1"
+              outline
+              shape="round">
+        <nb-icon icon="arrow-ios-back-outline"></nb-icon>
+      </button>
+
+      <span class="page-info">
+        Page {{ currentPage }} sur {{ totalPages }}
+      </span>
+
+      <button nbButton
+              status="basic"
+              (click)="changePage(currentPage + 1)"
+              [disabled]="currentPage === totalPages"
+              outline
+              shape="round">
+        <nb-icon icon="arrow-ios-forward-outline"></nb-icon>
+      </button>
+    </div>
+  </nb-card-body>
+</nb-card>

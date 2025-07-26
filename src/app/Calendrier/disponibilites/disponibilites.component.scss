@@ -1,0 +1,146 @@
+/* Filtre spécialité */
+.filtre-specialite {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background-color: #f4f7fa;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  
+  label {
+    font-size: 16px;
+    color: #333;
+  }
+  .alert {
+    padding: 10px;
+    background-color: #c41f1f;
+    color: #8a2d34;
+    border-radius: 5px;
+    margin-top: 15px;
+  }
+  .btn-reset {
+    margin-left: 10px;
+    background-color: #f44336;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+  
+  .btn-reset:hover {
+    background-color: #d32f2f;
+  }
+  
+  
+
+  .select-specialite {
+    padding: 8px 14px;
+    font-size: 14px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    
+    &:focus {
+      border-color: #1e90ff;
+      box-shadow: 0 0 5px rgba(30, 144, 255, 0.3);
+    }
+  }
+
+  .btn-filtrer {
+    padding: 8px 16px;
+    background-color: #1e90ff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    
+    &:hover {
+      background-color: #0078d4;
+      transform: translateY(-2px);
+    }
+
+    &:active {
+      background-color: #005f96;
+      transform: translateY(1px);
+    }
+  }
+}
+
+/* Contrôles du calendrier */
+.calendar-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 14px 0;
+  border-bottom: 2px solid #ddd;
+  background-color: #f9f9f9;
+  
+  .left-controls, .right-controls {
+    display: flex;
+    gap: 8px;
+  }
+
+  .btn-navigation, .btn-view {
+    padding: 10px 16px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s ease;
+    
+    &:hover {
+      background-color: #f2f2f2;
+    }
+
+    &:active {
+      background-color: #e0e0e0;
+      transform: scale(0.98);
+    }
+
+    &.active {
+      background-color: #1e90ff;
+      color: white;
+      border-color: #1e90ff;
+    }
+  }
+
+  .center-title {
+    flex: 1;
+    text-align: center;
+
+    h3 {
+      font-size: 20px;
+      font-weight: bold;
+      color: #333;
+      margin: 0;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+  }
+}
+
+/* Animation de transition pour les vues de calendrier */
+.mwl-calendar-day-view,
+.mwl-calendar-week-view,
+.mwl-calendar-month-view {
+  transition: opacity 0.5s ease;
+}
+
+.mwl-calendar-day-view.ng-enter,
+.mwl-calendar-week-view.ng-enter,
+.mwl-calendar-month-view.ng-enter {
+  opacity: 0;
+}
+
+.mwl-calendar-day-view.ng-enter-active,
+.mwl-calendar-week-view.ng-enter-active,
+.mwl-calendar-month-view.ng-enter-active {
+  opacity: 1;
+}

@@ -1,0 +1,36 @@
+<div class="container mt-4">
+  <h3>Liste des interventions</h3>
+  <table class="table table-bordered mt-3" *ngIf="interventions.length > 0; else noData">
+    <thead class="table-light">
+      <tr>
+        <th>Date début</th>
+        <th>Date fin</th>
+        <th>Statut</th>
+        <th>Type</th>
+        <th>Priorité</th>
+        <th *ngIf="hasInterventionsEnCours()">Actions</th> <!-- Colonne conditionnelle -->
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let intervention of interventions">
+        <td>{{ intervention.dateDebut | date:'short' }}</td>
+        <td>{{ intervention.dateFin ? (intervention.dateFin | date:'short') : 'Non définie' }}</td>
+        <td>{{ intervention.statut }}</td>
+        <td>{{ intervention.typeIntervention }}</td>
+        <td>{{ intervention.priorite }}</td>
+        <td *ngIf="intervention.statut === 'EN_COURS'">
+          <a [routerLink]="['/auth/interventions', intervention.idInterv, 'rapport']" class="btn btn-primary btn-sm me-2">
+            Ajouter rapport
+          </a>
+          <a [routerLink]="['/auth/historique/ajouter', intervention.idInterv]" class="btn btn-secondary btn-sm">
+            Ajouter historique
+          </a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <ng-template #noData>
+    <p>Aucune intervention trouvée pour ce technicien.</p>
+  </ng-template>
+</div>

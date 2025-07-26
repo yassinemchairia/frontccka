@@ -1,0 +1,16 @@
+export enum Role {
+  TECHNICIEN = 'TECHNICIEN',
+  ADMIN = 'ADMIN'
+}
+
+export enum Specialite {
+  ELECTRICITE = 'ELECTRICITE',
+  CLIMATISATION = 'CLIMATISATION',
+  ENVIRONNEMENT = 'ENVIRONNEMENT'
+}
+
+export enum StatutTechnicien {
+  EN_ATTENTE = 'EN_ATTENTE',
+  VALIDE = 'VALIDE',
+  REJETE = 'REJETE'
+}

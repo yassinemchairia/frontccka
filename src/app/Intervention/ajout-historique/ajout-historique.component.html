@@ -1,0 +1,14 @@
+<div class="container">
+  <h2>Ajouter un historique pour l'intervention </h2>
+  
+  <div class="form-group">
+    <label>Description :</label>
+    <textarea [(ngModel)]="description" class="form-control" rows="4"></textarea>
+  </div>
+
+  <button (click)="ajouterHistorique()" class="btn btn-primary mt-2">Ajouter</button>
+
+  <div *ngIf="message" class="alert alert-info mt-3">
+    {{ message }}
+  </div>
+</div>

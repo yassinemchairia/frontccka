@@ -1,0 +1,68 @@
+.stats-container {
+  background: linear-gradient(135deg, #fdfbfb, #ebedee);
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+  padding: 2rem;
+  margin: 2rem auto;
+  max-width: 1000px;
+  font-family: 'Segoe UI', Roboto, sans-serif;
+  animation: fadeIn 0.5s ease-in-out;
+
+  h2 {
+    text-align: center;
+    font-size: 2.2rem;
+    margin-bottom: 2rem;
+    color: #0070e0;
+  }
+
+  div {
+    margin-bottom: 0.7rem;
+    font-size: 1.05rem;
+    color: #0f0f90;
+
+    strong {
+      color: #2980b9;
+      font-weight: 600;
+    }
+  }
+
+  canvas {
+    border-radius: 12px;
+    background: #f6f6f6;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+    padding: 1.2rem;
+    transition: transform 0.25s ease-in-out;
+
+    &:hover {
+      transform: scale(1.015);
+    }
+  }
+}
+
+.loading {
+  font-size: 1.6rem;
+  text-align: center;
+  color: #3498db;
+  margin-top: 2rem;
+  animation: blink 1.5s infinite;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes blink {
+  0%, 100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 1;
+  }
+}

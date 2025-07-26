@@ -1,0 +1,117 @@
+<div class="statistics-container">
+  <div class="header">
+    <h2>Tableau de bord des alertes</h2>
+    <p class="subtitle">Vue d'ensemble des indicateurs clés</p>
+  </div>
+
+  <div class="stats-grid">
+    <!-- Carte synthèse -->
+    <div class="summary-card">
+      <div class="summary-item">
+        <div class="summary-icon" style="background-color: #4e73df;">
+          <i class="fas fa-bolt"></i>
+        </div>
+        <div class="summary-content">
+          <h3>Alertes totales</h3>
+          <p>{{ typePanneStats.ELECTRICITE + typePanneStats.CLIMATISATION + typePanneStats.ENVIRONNEMENT }}</p>
+        </div>
+      </div>
+      
+      <div class="summary-item">
+        <div class="summary-icon" style="background-color: #1cc88a;">
+          <i class="fas fa-check-circle"></i>
+        </div>
+        <div class="summary-content">
+          <h3>Taux de résolution</h3>
+          <p [style.color]="getResolutionRateColor()">{{ resolutionRate | number:'1.0-0' }}%</p>
+        </div>
+      </div>
+      
+      <div class="summary-item">
+        <div class="summary-icon" style="background-color: #f6c23e;">
+          <i class="fas fa-clock"></i>
+        </div>
+        <div class="summary-content">
+          <h3>Temps moyen</h3>
+          <p [style.color]="getAverageTimeColor()">{{ averageResolutionTime | number:'1.1-1' }}h</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Graphique des types de panne -->
+    <div class="chart-card">
+      <div class="chart-header">
+        <h3>Répartition par type</h3>
+        <div class="chart-legend">
+          <div *ngFor="let label of typePanneChartData?.labels; let i = index" class="legend-item">
+            <span class="legend-color" [style.background-color]="typePanneChartData?.datasets[0].backgroundColor[i]"></span>
+            <span>{{ label }}: {{ typePanneChartData?.datasets[0].data[i] }}</span>
+          </div>
+        </div>
+      </div>
+      <div class="chart-container">
+        <canvas baseChart
+          [data]="typePanneChartData"
+          [type]="'doughnut'"
+          [options]="chartOptions">
+        </canvas>
+      </div>
+    </div>
+
+    <!-- Graphique des niveaux de gravité -->
+    <div class="chart-card">
+      <div class="chart-header">
+        <h3>Répartition par gravité</h3>
+        <div class="chart-legend">
+          <div *ngFor="let label of graviteChartData?.labels; let i = index" class="legend-item">
+            <span class="legend-color" [style.background-color]="graviteChartData?.datasets[0].backgroundColor[i]"></span>
+            <span>{{ label }}: {{ graviteChartData?.datasets[0].data[i] }}</span>
+          </div>
+        </div>
+      </div>
+      <div class="chart-container">
+        <canvas baseChart
+          [data]="graviteChartData"
+          [type]="'doughnut'"
+          [options]="chartOptions">
+        </canvas>
+      </div>
+    </div>
+
+    <!-- Détails des statistiques -->
+    <div class="details-card">
+      <h3>Détails des indicateurs</h3>
+      
+      <div class="detail-item">
+        <div class="detail-label">
+          <span class="indicator electricite"></span>
+          <span>Alertes Électricité</span>
+        </div>
+        <div class="detail-value">{{ typePanneStats.ELECTRICITE }}</div>
+        <div class="progress-bar">
+        </div>
+      </div>
+      
+      <div class="detail-item">
+        <div class="detail-label">
+          <span class="indicator climatisation"></span>
+          <span>Alertes Climatisation</span>
+        </div>
+        <div class="detail-value">{{ typePanneStats.CLIMATISATION }}</div>
+        <div class="progress-bar">
+        </div>
+      </div>
+      
+      <div class="detail-item">
+        <div class="detail-label">
+          <span class="indicator environnement"></span>
+          <span>Alertes Environnement</span>
+        </div>
+        <div class="detail-value">{{ typePanneStats.ENVIRONNEMENT }}</div>
+        <div class="progress-bar">
+         
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,79 @@
+<div class="calendar-container">
+    <!-- Sélecteur de technicien (à adapter selon votre logique) -->
+    <div class="technicien-selector" *ngIf="!technicienId">
+      <label>Sélectionnez un technicien:</label>
+      <select [(ngModel)]="technicienId" (change)="setTechnicienId(technicienId)">
+        <option *ngFor="let tech of techniciensList" [value]="tech.id">{{ tech.nom }} {{ tech.prenom }}</option>
+      </select>
+      <button (click)="loadInterventions()">Charger</button>
+    </div>
+  
+    <!-- Message d'information -->
+    <div *ngIf="message" class="alert alert-info">
+      {{ message }}
+    </div>
+  
+    <!-- Contrôles du calendrier -->
+    <div class="calendar-controls">
+      <div class="left-controls">
+        <button (click)="changeDate(-1)" class="btn-navigation">← Précédent</button>
+        <button (click)="goToToday()" class="btn-navigation">Aujourd'hui</button>
+        <button (click)="changeDate(1)" class="btn-navigation">Suivant →</button>
+      </div>
+  
+      <div class="center-title">
+        <h3>
+          {{ view === CalendarView.Month ? 
+             (viewDate | date:'MMMM yyyy':'fr') : 
+             (view === CalendarView.Week ? 
+              ('Semaine du ' + (viewDate | date:'dd MMMM yyyy':'fr')) : 
+              (viewDate | date:'EEEE dd MMMM yyyy':'fr')) }}
+        </h3>
+      </div>
+  
+      <div class="right-controls">
+        <button [class.active]="view === CalendarView.Day" (click)="setView(CalendarView.Day)" class="btn-view">Jour</button>
+        <button [class.active]="view === CalendarView.Week" (click)="setView(CalendarView.Week)" class="btn-view">Semaine</button>
+        <button [class.active]="view === CalendarView.Month" (click)="setView(CalendarView.Month)" class="btn-view">Mois</button>
+      </div>
+    </div>
+  
+    <!-- Vue du calendrier -->
+    <mwl-calendar-day-view
+      *ngIf="view === CalendarView.Day"
+      [viewDate]="viewDate"
+      [events]="events"
+      [refresh]="refresh"
+      [hourSegments]="4"
+      [dayStartHour]="8"
+      [dayEndHour]="20">
+    </mwl-calendar-day-view>
+  
+    <mwl-calendar-week-view
+      *ngIf="view === CalendarView.Week"
+      [viewDate]="viewDate"
+      [events]="events"
+      [refresh]="refresh"
+      [hourSegments]="2"
+      [dayStartHour]="8"
+      [dayEndHour]="20">
+    </mwl-calendar-week-view>
+  
+    <mwl-calendar-month-view
+      *ngIf="view === CalendarView.Month"
+      [viewDate]="viewDate"
+      [events]="events"
+      [refresh]="refresh">
+    </mwl-calendar-month-view>
+  
+    <!-- Tooltip pour les événements -->
+    <div *ngIf="events.length > 0" class="event-tooltip" #tooltip>
+      <div *ngIf="tooltipContent">
+        <h4>{{ tooltipContent.title }}</h4>
+        <p>Type: {{ tooltipContent.meta?.type }}</p>
+        <p>Statut: {{ tooltipContent.meta?.status }}</p>
+        <p>Priorité: {{ tooltipContent.meta?.priority }}</p>
+        <p>Date: {{ tooltipContent.start | date:'short' }}</p>
+      </div>
+    </div>
+  </div>

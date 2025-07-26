@@ -1,0 +1,40 @@
+<div class="min-h-screen bg-gray-100">
+  <!-- Header -->
+  <header class="bg-blue-600 text-white p-4 shadow-md">
+    <h1 class="text-2xl font-bold">Dashboard Maintenance</h1>
+  </header>
+
+  <!-- Main Dashboard Content -->
+  <main class="container mx-auto p-6">
+    <!-- KPI Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <!-- Alert Resolution Rate -->
+      <div class="bg-white rounded-lg shadow-md p-6">
+        <h2 class="text-lg font-semibold text-gray-700">Taux d'alertes résolues</h2>
+        <p class="text-3xl font-bold text-blue-600 mt-2">{{ resolutionRate | number:'1.1-1' }}%</p>
+        <p class="text-sm text-gray-500 mt-1">Pourcentage des alertes résolues</p>
+      </div>
+
+      <!-- Average Intervention Cost -->
+      <div class="bg-white rounded-lg shadow-md p-6">
+        <h2 class="text-lg font-semibold text-gray-700">Coût moyen des interventions</h2>
+        <p class="text-3xl font-bold text-blue-600 mt-2">{{ averageCost | currency:'EUR':'symbol':'1.0-0' }}</p>
+        <p class="text-sm text-gray-500 mt-1">Coût moyen par intervention</p>
+      </div>
+
+      <!-- Global Satisfaction -->
+      <div class="bg-white rounded-lg shadow-md p-6">
+        <h2 class="text-lg font-semibold text-gray-700">Satisfaction globale</h2>
+        <p class="text-3xl font-bold text-blue-600 mt-2">{{ globalSatisfaction | number:'1.1-1' }}/5</p>
+        <p class="text-sm text-gray-500 mt-1">Note moyenne de satisfaction</p>
+      </div>
+
+      <!-- Preventive/Corrective Ratio -->
+      <div class="bg-white rounded-lg shadow-md p-6">
+        <h2 class="text-lg font-semibold text-gray-700">Ratio préventif/correctif</h2>
+        <p class="text-3xl font-bold text-blue-600 mt-2">{{ preventiveCorrectiveRatio | number:'1.2-2' }}</p>
+        <p class="text-sm text-gray-500 mt-1">Ratio interventions préventives vs correctives</p>
+      </div>
+    </div>
+  </main>
+</div>

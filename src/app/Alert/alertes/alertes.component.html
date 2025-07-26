@@ -1,0 +1,100 @@
+<div class="page-container">
+  <!-- Formulaire de filtre à gauche -->
+  <div class="filtre-container">
+    <div class="filtre-item">
+      <label>Type de Panne :</label>
+      <select [(ngModel)]="selectedTypePanne" class="filtre-select">
+        <option value="">Tous</option>
+        <option *ngFor="let type of typesPannes" [value]="type">{{ type }}</option>
+      </select>
+    </div>
+
+    <div class="filtre-item">
+      <label>Gravité :</label>
+      <select [(ngModel)]="selectedGravite" class="filtre-select">
+        <option value="">Toutes</option>
+        <option *ngFor="let gravite of niveauxGravite" [value]="gravite">{{ gravite }}</option>
+      </select>
+    </div>
+
+    <div class="filtre-item">
+      <label>Statut :</label>
+      <select [(ngModel)]="selectedResolution" class="filtre-select">
+        <option value="">Tous</option>
+        <option value="Résolu">Résolu</option>
+        <option value="Non Résolu">Non Résolu</option>
+      </select>
+    </div>
+
+    <div class="filtre-actions">
+      <button (click)="filtrerAlertes()" class="filtre-btn">Appliquer les filtres</button>
+      <button (click)="resetFiltre()" class="filtre-btn">Réinitialiser</button>
+    </div>
+  </div>
+
+  <!-- Liste des alertes à droite -->
+  <div class="liste-alertes">
+    <!-- Loader -->
+    <div *ngIf="isLoading" class="loader-container">
+      <div class="spinner"></div>
+    </div>
+
+    <!-- Tableau d'alertes -->
+    <div *ngIf="alertes.length > 0 && !isLoading">
+      <h2>Liste des Alertes</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Capteur</th>
+            <th>Type de Panne</th>
+            <th>Gravité</th>
+            <th>Date</th>
+            <th>Statut</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let alerte of paginatedAlertes" class="fade-in-row">
+            <td data-label="Capteur">{{ alerte.emplacement }}</td>
+            <td data-label="Type de Panne">{{ alerte.typePanne }}</td>
+            <td data-label="Gravité">{{ alerte.niveauGravite }}</td>
+            <td data-label="Date">{{ alerte.dateAlerte }}</td>
+            <td
+              data-label="Statut"
+              [ngClass]="alerte.estResolu ? 'statut-resolu' : 'statut-nonresolu'"
+            >
+              {{ alerte.estResolu ? 'Résolu' : 'Non Résolu' }}
+            </td>
+            <td>
+              <button
+                *ngIf="!alerte.estResolu"
+                (click)="predictAndResolve(alerte)"
+                class="predict-btn"
+              >
+                Predict and Resolve
+              </button>
+              <button
+                (click)="ajouterIntervention(alerte.idAlerte)"
+                class="ajouter-btn"
+              >
+                Ajouter Intervention
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <!-- Pagination -->
+      <div class="pagination-container" *ngIf="totalPages > 1">
+        <button (click)="changerPage(currentPage - 1)" [disabled]="currentPage === 1">Précédent</button>
+        <button
+          *ngFor="let page of [].constructor(totalPages); let i = index"
+          (click)="changerPage(i + 1)"
+          [class.active]="i + 1 === currentPage"
+        >
+          {{ i + 1 }}
+        </button>
+        <button (click)="changerPage(currentPage + 1)" [disabled]="currentPage === totalPages">Suivant</button>
+      </div>
+    </div>
+  </div>
+</div>

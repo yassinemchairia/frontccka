@@ -1,0 +1,210 @@
+@import '@nebular/theme/styles/theming';
+@import '@nebular/theme/styles/themes/default';
+
+:host {
+  display: block;
+  padding: 20px;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  min-height: 100vh;
+}
+
+.intervention-card-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  background: nb-theme(background-basic-color-1);
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+nb-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: nb-theme(primary-500);
+  color: nb-theme(text-basic-color-inverse);
+  padding: 1.5rem;
+}
+
+nb-card-header h2 {
+  margin: 0;
+  font-size: 1.8rem;
+  font-weight: 600;
+}
+
+.alert-message {
+  margin: 1rem;
+  text-align: center;
+}
+
+.search-container {
+  margin: 1rem;
+  max-width: 500px;
+}
+
+.intervention-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  padding: 1.5rem;
+}
+
+.intervention-card {
+  background: nb-theme(background-basic-color-1);
+  border: none;
+  border-radius: 10px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.intervention-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.intervention-details, .historique-details {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.detail-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.5rem 0;
+}
+
+.detail-item nb-icon {
+  font-size: 1.5rem;
+  color: nb-theme(primary-500);
+}
+
+.detail-item strong {
+  font-size: 1.1rem;
+  color: nb-theme(text-basic-color);
+}
+
+.detail-item p {
+  margin: 0;
+  color: nb-theme(text-hint-color);
+}
+
+.historique-section {
+  margin-top: 1rem;
+}
+
+.historique-buttons {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.historique-buttons button {
+  min-width: 180px;
+  padding: 0.75rem 1.5rem;
+  white-space: normal;
+  text-align: center;
+  overflow: visible;
+  text-overflow: clip;
+  font-size: 0.9rem;
+  line-height: 1.2;
+}
+
+.historique-content {
+  margin-top: 1rem;
+}
+
+.historique-actions {
+  margin: 1rem 0;
+  display: flex;
+  gap: 1rem;
+}
+
+.historique-form-container {
+  margin-top: 1rem;
+  padding: 1rem;
+  background: #f9f9f9;
+  border-radius: 8px;
+}
+
+.historique-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.form-actions {
+  display: flex;
+  gap: 1rem;
+}
+
+.historique-card {
+  background: #f9f9f9;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.priorite-basse { color: #28a745; }
+.priorite-moyenne { color: #ffc107; }
+.priorite-elevee { color: #dc3545; }
+.statut-encours { color: #007bff; }
+.statut-terminee { color: #28a745; }
+
+.date-container.with-warning {
+  color: #ffc107;
+}
+
+.en-cours-indicator {
+  margin-left: 0.5rem;
+  color: #ffc107;
+}
+
+.no-results {
+  text-align: center;
+  color: nb-theme(text-hint-color);
+  font-style: italic;
+}
+
+.search-results {
+  margin: 1rem;
+}
+
+.search-results h3 {
+  font-size: 1.4rem;
+  color: nb-theme(text-basic-color);
+  margin-bottom: 1rem;
+}
+
+@media (max-width: 768px) {
+  .intervention-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .intervention-card-container {
+    margin: 0 1rem;
+  }
+
+  .historique-buttons {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.5rem;
+  }
+
+  .historique-buttons button {
+    min-width: 100%;
+    padding: 0.75rem 1.5rem;
+    font-size: 0.95rem;
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.intervention-card, .historique-card, .historique-form-container {
+  animation: fadeIn 0.5s ease-out;
+}

@@ -1,0 +1,111 @@
+<div class="statistics-container">
+  <div class="header">
+    <h2>Statistiques de Satisfaction</h2>
+    <p class="subtitle">Analyse des retours clients sur les interventions</p>
+  </div>
+
+  <div class="stats-grid">
+    <!-- Summary Cards -->
+    <div class="summary-card">
+      <div class="summary-item">
+        <div class="summary-icon" [style.background-color]="getSatisfactionColor(globalAverage)">
+          <i class="fas fa-smile"></i>
+        </div>
+        <div class="summary-content">
+          <h3>Moyenne globale</h3>
+          <p>{{ globalAverage | number:'1.1-1' }}/10</p>
+          <small>{{ getSatisfactionLevel(globalAverage) }}</small>
+        </div>
+      </div>
+      
+      <div class="summary-item">
+        <div class="summary-icon" style="background-color: #4e73df;">
+          <i class="fas fa-chart-line"></i>
+        </div>
+        <div class="summary-content">
+          <h3>Évolution (6 mois)</h3>
+          <p>{{ (getTrendChange() >= 0 ? '+' : '') + getTrendChange() | number:'1.1-1' }}%</p>
+          <small>vs période précédente</small>
+        </div>
+      </div>
+      
+      <div class="summary-item">
+        <div class="summary-icon" style="background-color: #1cc88a;">
+          <i class="fas fa-tools"></i>
+        </div>
+        <div class="summary-content">
+          <h3>Meilleur type</h3>
+          <p>{{ getBestType()?.type || '-' }}</p>
+          <small>{{ getBestType()?.score | number:'1.1-1' }}/10</small>
+        </div>
+      </div>
+    </div>
+
+    <!-- Trend Chart -->
+    <div class="chart-card">
+      <div class="chart-header">
+        <h3>Évolution de la satisfaction</h3>
+      </div>
+      <div class="chart-container">
+        <canvas baseChart 
+          [data]="trendChartData" 
+          [type]="'line'" 
+          [options]="lineChartOptions">
+        </canvas>
+      </div>
+    </div>
+
+    <!-- By Type Chart -->
+    <div class="chart-card">
+      <div class="chart-header">
+        <h3>Satisfaction par type d'intervention</h3>
+      </div>
+      <div class="chart-container">
+        <canvas baseChart 
+          [data]="typeChartData" 
+          [type]="'bar'" 
+          [options]="barChartOptions">
+        </canvas>
+      </div>
+    </div>
+
+    <!-- Distribution Chart -->
+    <div class="chart-card">
+      <div class="chart-header">
+        <h3>Répartition des notes</h3>
+      </div>
+      <div class="chart-container">
+        <canvas baseChart 
+          [data]="distributionChartData" 
+          [type]="'bar'" 
+          [options]="barChartOptions">
+        </canvas>
+      </div>
+    </div>
+
+    <!-- Details Section -->
+    <div class="details-card full-width">
+      <h3>Détails des notes</h3>
+      
+      <div class="satisfaction-details">
+        <div class="satisfaction-item" *ngFor="let score of objectKeys(satisfactionDistribution)">
+          <div class="score-label">
+            <span class="score-badge" [style.background-color]="getSatisfactionColor(+score)">
+              {{ score }}/10
+            </span>
+            <span>{{ getSatisfactionLevel(+score) }}</span>
+          </div>
+          <div class="progress-container">
+            <div class="progress-bar">
+              <div class="progress-fill" 
+                   [style.width.%]="getPercentage(+score)"
+                   [style.background-color]="getSatisfactionColor(+score)">
+              </div>
+            </div>
+            <span class="count">{{ satisfactionDistribution[score] }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

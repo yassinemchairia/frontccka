@@ -1,0 +1,125 @@
+<div class="statistics-container">
+  <div class="header">
+    <h2>Statistiques Temporelles</h2>
+    <p class="subtitle">Analyse des tendances et périodes critiques</p>
+  </div>
+
+  <div class="period-selector">
+    <mat-button-toggle-group [(ngModel)]="selectedPeriod" (change)="onPeriodChange()">
+      <mat-button-toggle value="day">Journalier</mat-button-toggle>
+      <mat-button-toggle value="month">Mensuel</mat-button-toggle>
+    </mat-button-toggle-group>
+    <mat-form-field appearance="outline">
+      <mat-label>Période</mat-label>
+      <mat-select [(ngModel)]="periodCount" (selectionChange)="onPeriodChange()">
+        <mat-option *ngIf="selectedPeriod === 'day'" [value]="7">7 jours</mat-option>
+        <mat-option *ngIf="selectedPeriod === 'day'" [value]="30">30 jours</mat-option>
+        <mat-option *ngIf="selectedPeriod === 'day'" [value]="90">90 jours</mat-option>
+        <mat-option *ngIf="selectedPeriod === 'month'" [value]="6">6 mois</mat-option>
+        <mat-option *ngIf="selectedPeriod === 'month'" [value]="12">12 mois</mat-option>
+        <mat-option *ngIf="selectedPeriod === 'month'" [value]="24">24 mois</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <div class="stats-grid">
+    <!-- Summary Cards -->
+    <div class="summary-card">
+      <div class="summary-item">
+        <div class="summary-icon" style="background-color: #e74a3b;">
+          <i class="fas fa-bell"></i>
+        </div>
+        <div class="summary-content">
+          <h3>Alertes totales</h3>
+          <p>{{ getTotalAlertes() }}</p>
+        </div>
+      </div>
+      
+      <div class="summary-item">
+        <div class="summary-icon" style="background-color: #36b9cc;">
+          <i class="fas fa-tools"></i>
+        </div>
+        <div class="summary-content">
+          <h3>Interventions totales</h3>
+          <p>{{ getTotalInterventions() }}</p>
+        </div>
+      </div>
+      
+      <div class="summary-item">
+        <div class="summary-icon" style="background-color: #4e73df;">
+          <i class="fas fa-clock"></i>
+        </div>
+        <div class="summary-content">
+          <h3>Heure de pointe</h3>
+          <p>{{ getPeakHour() }}</p>
+        </div>
+      </div>
+      
+      <div class="summary-item">
+        <div class="summary-icon" style="background-color: #f6c23e;">
+          <i class="fas fa-calendar-day"></i>
+        </div>
+        <div class="summary-content">
+          <h3>Jour critique</h3>
+          <p>{{ getPeakDay() }}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Alertes Chart -->
+    <div class="chart-card">
+      <div class="chart-header">
+        <h3>Alertes par période</h3>
+      </div>
+      <div class="chart-container">
+        <canvas baseChart 
+          [data]="alertesChartData" 
+          [type]="'line'" 
+          [options]="lineChartOptions">
+        </canvas>
+      </div>
+    </div>
+
+    <!-- Interventions Chart -->
+    <div class="chart-card">
+      <div class="chart-header">
+        <h3>Interventions par période</h3>
+      </div>
+      <div class="chart-container">
+        <canvas baseChart 
+          [data]="interventionsChartData" 
+          [type]="'line'" 
+          [options]="lineChartOptions">
+        </canvas>
+      </div>
+    </div>
+
+    <!-- Critical Hours Chart -->
+    <div class="chart-card">
+      <div class="chart-header">
+        <h3>Heures critiques</h3>
+      </div>
+      <div class="chart-container">
+        <canvas baseChart 
+          [data]="hoursChartData" 
+          [type]="'bar'" 
+          [options]="barChartOptions">
+        </canvas>
+      </div>
+    </div>
+
+    <!-- Critical Days Chart -->
+    <div class="chart-card">
+      <div class="chart-header">
+        <h3>Jours critiques</h3>
+      </div>
+      <div class="chart-container">
+        <canvas baseChart 
+          [data]="daysChartData" 
+          [type]="'bar'" 
+          [options]="barChartOptions">
+        </canvas>
+      </div>
+    </div>
+  </div>
+</div>

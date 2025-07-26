@@ -1,0 +1,117 @@
+<div class="rdv-container">
+  <div class="header">
+    <h2>Mes Rendez-vous</h2>
+    <div class="filter-controls">
+      <!-- Filtres optionnels -->
+    </div>
+  </div>
+
+  <!-- État de chargement -->
+  <div *ngIf="isLoading" class="loading-state">
+    <div class="spinner"></div>
+  </div>
+
+  <!-- État vide -->
+  <div *ngIf="!isLoading && rendezVousList.length === 0" class="empty-state">
+    <div class="icon">📅</div>
+    <h3>Aucun rendez-vous prévu</h3>
+    <p>Vous n'avez aucun rendez-vous pour le moment</p>
+    <button class="btn btn-primary">Planifier un rendez-vous</button>
+  </div>
+
+  <!-- Liste des rendez-vous -->
+  <div class="row">
+    <div *ngFor="let rdv of paginatedRendezVous" class="col-md-6 col-lg-4 mb-4">
+      <div class="rdv-card" [class.notification-sent]="rdv.notificationEnvoyee" 
+                          [class.notification-pending]="!rdv.notificationEnvoyee">
+        <div class="rdv-card-header">
+          <h5>{{ rdv.description }}
+            <span class="badge">{{ formatDate(rdv.dateRendezVous) }}</span>
+          </h5>
+        </div>
+        <div class="rdv-card-body">
+          <div class="rdv-meta">
+            <div class="rdv-meta-item">
+              <div class="label">Date</div>
+              <div class="value">{{ formatDate(rdv.dateRendezVous) }}</div>
+            </div>
+            <div class="rdv-meta-item">
+              <div class="label">Organisé par</div>
+              <div class="value">{{ rdv.administrateur.prenom }} {{ rdv.administrateur.nom }}</div>
+            </div>
+            <div class="rdv-meta-item">
+              <div class="label">Statut</div>
+              <div class="value">{{ rdv.notificationEnvoyee ? 'Confirmé' : 'En attente' }}</div>
+            </div>
+          </div>
+
+          <div class="technicians-section">
+            <h6>Techniciens</h6>
+            <div class="technician-list">
+              <div *ngFor="let tech of rdv.techniciens" class="technician-badge">
+                <div class="avatar">{{ tech.prenom.charAt(0) }}{{ tech.nom.charAt(0) }}</div>
+                {{ tech.prenom }} {{ tech.nom }}
+              </div>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+
+  <!-- Pagination -->
+  <div *ngIf="rendezVousList.length > 0" class="pagination-container">
+    <div class="pagination-controls">
+      <button 
+        class="pagination-button" 
+        [disabled]="currentPage === 1"
+        (click)="onPageChange(currentPage - 1)">
+        &larr; Précédent
+      </button>
+      
+      <div class="page-numbers">
+        <button 
+          *ngIf="currentPage > 2 && totalPages > 5" 
+          class="page-button"
+          (click)="onPageChange(1)">
+          1
+        </button>
+        <span *ngIf="currentPage > 3 && totalPages > 5" class="page-ellipsis">...</span>
+        
+        <button 
+          *ngFor="let page of pages" 
+          class="page-button" 
+          [class.active]="page === currentPage"
+          (click)="onPageChange(page)">
+          {{ page }}
+        </button>
+        
+        <span *ngIf="currentPage < totalPages - 2 && totalPages > 5" class="page-ellipsis">...</span>
+        <button 
+          *ngIf="currentPage < totalPages - 1 && totalPages > 5" 
+          class="page-button"
+          (click)="onPageChange(totalPages)">
+          {{ totalPages }}
+        </button>
+      </div>
+      
+      <button 
+        class="pagination-button" 
+        [disabled]="currentPage === totalPages"
+        (click)="onPageChange(currentPage + 1)">
+        Suivant &rarr;
+      </button>
+    </div>
+    
+    <div class="items-per-page-selector">
+      <label for="itemsPerPage">Éléments par page:</label>
+      <select 
+        id="itemsPerPage" 
+        [(ngModel)]="itemsPerPage" 
+        (change)="onItemsPerPageChange()">
+        <option *ngFor="let option of pageSizeOptions" [value]="option">{{ option }}</option>
+      </select>
+    </div>
+  </div>
+</div>

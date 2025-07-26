@@ -1,0 +1,230 @@
+.container {
+  padding: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+}
+
+h2 {
+  color: #1f2937;
+  text-align: center;
+  margin-bottom: 2.5rem;
+  font-size: 2.25rem;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+}
+
+.capteurs-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.capteur-card {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-top: 4px solid;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+
+  &.TEMPERATURE { border-top-color: #ef4444; }
+  &.HUMIDITE { border-top-color: #3b82f6; }
+  &.ELECTRICITE { border-top-color: #22c55e; }
+
+  &.updated {
+    animation: pulse 1s ease-in-out;
+  }
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  }
+
+  .capteur-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 1rem;
+
+    .capteur-type {
+      font-size: 0.875rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      color: #6b7280;
+      letter-spacing: 0.05em;
+    }
+
+    .status {
+      padding: 0.4rem 1rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      color: #ffffff;
+      transition: background-color 0.3s ease;
+
+      &.unknown { background-color: #9ca3af; }
+      &.normal { background-color: #22c55e; }
+      &.bas { background-color: #f59e0b; }
+      &.bas-critique { background-color: #f97316; }
+      &.critical { background-color: #ef4444; }
+      &.high-critical {
+        background-color: #dc2626;
+        animation: pulse-alert 1.5s infinite;
+      }
+    }
+  }
+
+  .capteur-visual {
+    margin: 1rem 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 140px;
+
+    svg {
+      display: block;
+      width: 100%;
+      max-width: 140px;
+      height: 140px;
+    }
+  }
+
+  .capteur-details {
+    width: 100%;
+    text-align: center;
+
+    p {
+      margin: 0.5rem 0;
+      font-size: 0.95rem;
+      color: #6b7280;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      strong {
+        color: #1f2937;
+        font-weight: 600;
+      }
+    }
+
+    .value-display {
+      font-size: 1.75rem;
+      font-weight: 700;
+      margin: 1rem 0;
+      color: #1f2937;
+      transition: color 0.3s ease;
+    }
+  }
+}
+
+.svg-thermometer text,
+.svg-gauge text {
+  font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  fill: #6b7280;
+}
+
+.mercury-level,
+.needle-animation,
+.gauge-fill-animation {
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.svg-gauge {
+  overflow: visible;
+}
+
+.lightbulb-display {
+  position: relative;
+  width: 100%;
+  height: 140px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .svg-lightbulb {
+    width: 90px;
+    height: 140px;
+    transition: fill 0.4s ease;
+  }
+
+  .lightbulb-glow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 180px;
+    height: 180px;
+    background: radial-gradient(circle, rgba(250, 204, 21, 0.5) 0%, rgba(250, 204, 21, 0) 70%);
+    border-radius: 50%;
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.6s ease-in-out;
+  }
+
+  &.on .lightbulb-glow {
+    opacity: 1;
+  }
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1); }
+  50% { transform: scale(1.03); box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15); }
+  100% { transform: scale(1); box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1); }
+}
+
+@keyframes pulse-alert {
+  0% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.7); }
+  70% { box-shadow: 0 0 0 12px rgba(220, 38, 38, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0); }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .capteurs-list {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1rem;
+  }
+
+  .capteur-card {
+    padding: 1rem;
+  }
+
+  .capteur-visual svg {
+    max-width: 120px;
+    height: 120px;
+  }
+
+  .capteur-details .value-display {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 1rem;
+  }
+
+  h2 {
+    font-size: 1.75rem;
+  }
+
+  .capteur-visual svg {
+    max-width: 100px;
+    height: 100px;
+  }
+
+  .capteur-details .value-display {
+    font-size: 1.25rem;
+  }
+}

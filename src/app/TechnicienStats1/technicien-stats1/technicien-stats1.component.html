@@ -1,0 +1,147 @@
+<div class="stats-container">
+  <h2 class="title">Mon Profil</h2>
+
+  <div *ngIf="loading" class="loading">
+    <mat-progress-spinner mode="indeterminate" diameter="50" color="primary"></mat-progress-spinner>
+  </div>
+
+  <div *ngIf="errorMessage" class="alert alert-danger">
+    <mat-icon class="alert-icon">error_outline</mat-icon>
+    {{ errorMessage }}
+  </div>
+
+  <div *ngIf="stats" class="stats-content" @fadeIn>
+    <!-- Technician Info Card -->
+    <mat-card class="info-card">
+      <mat-card-header class="info-header">
+        <div mat-card-avatar class="avatar">
+          <mat-icon></mat-icon>
+        </div>
+        <mat-card-title class="title-text">
+          <span *ngIf="!isEditMode">{{ stats.nom }} {{ stats.prenom }}</span>
+          <span *ngIf="isEditMode" class="edit-title">Modifier le Profil</span>
+        </mat-card-title>
+        <mat-card-subtitle class="specialty">
+          Spécialité: {{ stats.specialite }}
+          <button  (click)="toggleEditMode()" *ngIf="!isEditMode" class="edit-button" matTooltip="Modifier le profil">
+            <mat-icon>Modifier</mat-icon>
+          </button>
+        </mat-card-subtitle>
+      </mat-card-header>
+      
+      <mat-card-content class="info-content">
+        <!-- View Mode -->
+        <div *ngIf="!isEditMode" class="profile-details">
+          <div class="detail-item">
+            <mat-icon class="detail-icon">person_outline</mat-icon>
+            <p><strong>Nom:</strong> {{ stats.nom }}</p>
+          </div>
+          <div class="detail-item">
+            <mat-icon class="detail-icon">badge</mat-icon>
+            <p><strong>Prénom:</strong> {{ stats.prenom }}</p>
+          </div>
+          <div class="detail-item">
+            <mat-icon class="detail-icon">phone</mat-icon>
+            <p><strong>Téléphone:</strong> {{ stats.numeroTelephone || 'Non défini' }}</p>
+          </div>
+        </div>
+
+        <!-- Edit Mode -->
+        <form [formGroup]="profileForm" *ngIf="isEditMode" class="edit-form" @fadeIn>
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Nom</mat-label>
+            <input matInput formControlName="nom" placeholder="Entrez votre nom" required>
+            <mat-error *ngIf="profileForm.get('nom')?.hasError('required')">
+              Le nom est requis
+            </mat-error>
+            <mat-error *ngIf="profileForm.get('nom')?.hasError('minlength')">
+              Minimum 2 caractères
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Prénom</mat-label>
+            <input matInput formControlName="prenom" placeholder="Entrez votre prénom" required>
+            <mat-error *ngIf="profileForm.get('prenom')?.hasError('required')">
+              Le prénom est requis
+            </mat-error>
+            <mat-error *ngIf="profileForm.get('prenom')?.hasError('minlength')">
+              Minimum 2 caractères
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Numéro de téléphone</mat-label>
+            <input matInput formControlName="numeroTelephone" placeholder="+1234567890">
+            <mat-error *ngIf="profileForm.get('numeroTelephone')?.hasError('pattern')">
+              Format invalide (10-15 chiffres)
+            </mat-error>
+          </mat-form-field>
+
+          <div class="form-actions">
+            <button mat-raised-button color="primary" (click)="updateProfile()" [disabled]="profileForm.invalid || loading">
+              <mat-icon>save</mat-icon> Enregistrer
+            </button>
+            <button mat-raised-button color="warn" (click)="toggleEditMode()" [disabled]="loading">
+              <mat-icon>cancel</mat-icon> Annuler
+            </button>
+          </div>
+        </form>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Key Metrics Grid -->
+    <div class="metrics-grid">
+      <mat-card class="metric-card" (click)="navigateToInterventions()">
+        <mat-card-content>
+          <h3>Interventions</h3>
+          <p>{{ stats.nbInterventions }}</p>
+        </mat-card-content>
+      </mat-card>
+      <mat-card class="metric-card" (click)="navigateToInterventions()">
+        <mat-card-content>
+          <h3>Durée Totale</h3>
+          <p>{{ stats.dureeTotale }}</p>
+        </mat-card-content>
+      </mat-card>
+      <mat-card class="metric-card">
+        <mat-card-content>
+          <h3>Durée Moyenne</h3>
+          <p>{{ stats.dureeMoyenne }}</p>
+        </mat-card-content>
+      </mat-card>
+      <mat-card class="metric-card">
+        <mat-card-content>
+          <h3>Taux de Réussite</h3>
+          <p>{{ stats.tauxReussite }}</p>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <!-- Charts Section -->
+    <div class="charts-grid">
+      <mat-card class="chart-card">
+        <mat-card-header>
+          <mat-card-title>Statistiques des interventions par Priorité</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <canvas baseChart
+                  [data]="prioriteChartData"
+                  [type]="pieChartType"
+                  [options]="pieChartOptions"></canvas>
+        </mat-card-content>
+      </mat-card>
+      <mat-card class="chart-card">
+        <mat-card-header>
+          <mat-card-title>Statistiques des interventions par Type</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <canvas baseChart
+                  [data]="typeChartData"
+                  [type]="pieChartType"
+                  [options]="pieChartOptions"></canvas>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>

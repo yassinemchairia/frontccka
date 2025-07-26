@@ -1,0 +1,78 @@
+<div class="container">
+  <h2>Surveillance des Capteurs en Temps Réel</h2>
+  <div class="capteurs-list" role="list">
+    <div *ngFor="let capteur of capteurs; trackBy: trackById"
+         class="capteur-card"
+         [class.updated]="isRecentlyUpdated(capteur)"
+         [class.TEMPERATURE]="capteur.type === 'TEMPERATURE'"
+         [class.HUMIDITE]="capteur.type === 'HUMIDITE'"
+         [class.ELECTRICITE]="capteur.type === 'ELECTRICITE'"
+         role="listitem"
+         aria-label="Capteur {{ capteur.type | lowercase }} à {{ capteur.emplacement }}">
+      
+      <div class="capteur-header">
+        <span class="capteur-type">{{ capteur.type | titlecase }}</span>
+        <span class="status" [class]="getStatusClass(capteur)" [attr.aria-label]="getStatusLabel(capteur)">
+          {{ getStatusLabel(capteur) }}
+        </span>
+      </div>
+
+      <div class="capteur-visual">
+        <ng-container *ngIf="capteur.type === 'TEMPERATURE'">
+          <svg viewBox="0 0 100 200" class="svg-thermometer" aria-hidden="true">
+            <rect x="40" y="10" width="20" height="180" rx="10" fill="#f8fafc" stroke="#d1d5db" stroke-width="2"/>
+            <circle cx="50" cy="180" r="15" fill="#ef4444" stroke="#dc2626" stroke-width="2"/>
+            <rect x="42" [attr.y]="180 - (getTemperatureValue(capteur.valeurActuelle) / 100 * 150)"
+                  width="16" [attr.height]="getTemperatureValue(capteur.valeurActuelle) / 100 * 150"
+                  fill="#ef4444" rx="8" class="mercury-level"/>
+            <text x="35" y="15" font-size="8" text-anchor="end" fill="#6b7280">50°C</text>
+            <text x="35" y="100" font-size="8" text-anchor="end" fill="#6b7280">25°C</text>
+            <text x="35" y="185" font-size="8" text-anchor="end" fill="#6b7280">0°C</text>
+          </svg>
+        </ng-container>
+
+        <ng-container *ngIf="capteur.type === 'HUMIDITE'">
+          <svg viewBox="0 0 200 120" class="svg-gauge" aria-hidden="true">
+            <path d="M 20 100 A 80 80 0 0 1 180 100"
+                  fill="none" stroke="#f8fafc" stroke-width="16" stroke-linecap="round"/>
+            <path d="M 20 100 A 80 80 0 0 1 180 100"
+                  fill="none" stroke="#3b82f6" stroke-width="16" stroke-linecap="round"
+                  stroke-dasharray="251.2"
+                  [attr.stroke-dashoffset]="251.2 - (getHumidityValue(capteur.valeurActuelle) / 100 * 251.2)"
+                  class="gauge-fill-animation"/>
+            <line x1="100" y1="100" x2="100" y2="40"
+                  stroke="#1f2937" stroke-width="4" stroke-linecap="round"
+                  [attr.transform]="'rotate(' + getHumidityNeedleAngle(capteur.valeurActuelle) + ', 100, 100)'"
+                  class="needle-animation"/>
+            <circle cx="100" cy="100" r="6" fill="#1f2937"/>
+            <text x="20" y="115" font-size="12" text-anchor="start" fill="#6b7280">0%</text>
+            <text x="100" y="30" font-size="12" text-anchor="middle" fill="#6b7280">50%</text>
+            <text x="180" y="115" font-size="12" text-anchor="end" fill="#6b7280">100%</text>
+          </svg>
+        </ng-container>
+
+        <ng-container *ngIf="capteur.type === 'ELECTRICITE'">
+          <div class="lightbulb-display" [class.on]="capteur.etatElectricite === 'EN_MARCHE'">
+            <svg viewBox="0 0 100 150" class="svg-lightbulb" aria-hidden="true">
+              <ellipse cx="50" cy="60" rx="40" ry="50"
+                       [attr.fill]="capteur.etatElectricite === 'EN_MARCHE' ? '#facc15' : '#f8fafc'"
+                       stroke="#d1d5db" stroke-width="2"/>
+              <line x1="40" y1="50" x2="60" y2="50" stroke="#6b7280" stroke-width="2"/>
+              <line x1="50" y1="50" x2="50" y2="70" stroke="#6b7280" stroke-width="2"/>
+              <rect x="35" y="110" width="30" height="20" fill="#9ca3af" rx="5"/>
+              <rect x="38" y="130" width="24" height="10" fill="#6b7280" rx="3"/>
+            </svg>
+            <div class="lightbulb-glow" *ngIf="capteur.etatElectricite === 'EN_MARCHE'"></div>
+          </div>
+        </ng-container>
+      </div>
+
+      <div class="capteur-details">
+        <p><strong>Emplacement:</strong> <span>{{ capteur.emplacement }}</span></p>
+        <div class="value-display" [attr.aria-live]="isRecentlyUpdated(capteur) ? 'polite' : 'off'">
+          {{ formatValue(capteur) }}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

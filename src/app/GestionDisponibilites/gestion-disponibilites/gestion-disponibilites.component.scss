@@ -1,0 +1,322 @@
+// Modern color palette
+$primary-color: #2c3e50;
+$secondary-color: #3498db;
+$success-color: #27ae60;
+$danger-color: #e74c3c;
+$warning-color: #f1c40f;
+$background-color: #f5f6fa;
+$text-color: #34495e;
+$border-color: #dcdcdc;
+$hover-color: #ecf0f1;
+
+// Modern spacing and sizing
+$spacing-sm: 8px;
+$spacing-md: 16px;
+$spacing-lg: 24px;
+$border-radius: 8px;
+$box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+$transition: all 0.3s ease;
+
+// Container styling
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: $spacing-lg;
+  background: $background-color;
+  border-radius: $border-radius;
+  box-shadow: $box-shadow;
+}
+
+// Typography
+h2, h3, h4 {
+  color: $primary-color;
+  margin-bottom: $spacing-md;
+  font-weight: 600;
+}
+
+h2 {
+  font-size: 2rem;
+  text-align: center;
+}
+
+h3 {
+  font-size: 1.5rem;
+}
+
+h4 {
+  font-size: 1.25rem;
+}
+
+hr {
+  border: none;
+  border-top: 1px solid $border-color;
+  margin: $spacing-lg 0;
+}
+
+// Filter controls
+.filter-controls {
+  display: flex;
+  gap: $spacing-sm;
+  align-items: center;
+  margin-bottom: $spacing-lg;
+  
+  label {
+    font-weight: 500;
+    color: $text-color;
+  }
+
+  button {
+    padding: $spacing-sm $spacing-md;
+    border: 1px solid $border-color;
+    border-radius: $border-radius;
+    background: white;
+    color: $text-color;
+    cursor: pointer;
+    transition: $transition;
+
+    &.active {
+      background: $secondary-color;
+      color: white;
+      border-color: $secondary-color;
+    }
+
+    &:hover:not(.active) {
+      background: $hover-color;
+    }
+  }
+}
+
+// Disponibilité list
+.disponibilite-list {
+  margin-bottom: $spacing-lg;
+
+  ul {
+    list-style: none;
+    padding: 0;
+
+    li {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: $spacing-md;
+      margin-bottom: $spacing-sm;
+      background: white;
+      border-radius: $border-radius;
+      box-shadow: $box-shadow;
+      transition: $transition;
+
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+      }
+
+      span {
+        color: $text-color;
+      }
+
+      .disponible-text {
+        color: $success-color;
+        font-weight: 600;
+      }
+
+      .non-disponible-text {
+        color: $danger-color;
+        font-weight: 600;
+      }
+
+      .actions {
+        display: flex;
+        gap: $spacing-sm;
+      }
+    }
+  }
+
+  p {
+    text-align: center;
+    color: $text-color;
+    font-style: italic;
+  }
+}
+
+// Button styles
+.btn-modify, .btn-delete, button[type="submit"] {
+  padding: $spacing-sm $spacing-md;
+  border: none;
+  border-radius: $border-radius;
+  cursor: pointer;
+  transition: $transition;
+  font-weight: 500;
+}
+
+.btn-modify {
+  background: $secondary-color;
+  color: white;
+
+  &:hover {
+    background: darken($secondary-color, 10%);
+  }
+}
+
+.btn-delete, .btn-danger {
+  background: $danger-color;
+  color: white;
+
+  &:hover {
+    background: darken($danger-color, 10%);
+  }
+}
+
+button:disabled {
+  background: $border-color;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+// Pagination controls
+.pagination-controls {
+  display: flex;
+  gap: $spacing-md;
+  justify-content: center;
+  align-items: center;
+  margin: $spacing-lg 0;
+
+  button {
+    background: $secondary-color;
+    color: white;
+    padding: $spacing-sm $spacing-md;
+    border-radius: $border-radius;
+    border: none;
+    cursor: pointer;
+    transition: $transition;
+
+    &:hover:not(:disabled) {
+      background: darken($secondary-color, 10%);
+    }
+
+    &:disabled {
+      background: $border-color;
+      cursor: not-allowed;
+    }
+  }
+
+  span {
+    color: $text-color;
+    font-weight: 500;
+  }
+}
+
+// Form styling
+.form-group-inline, .add-single-form, .add-masse-form {
+  background: white;
+  padding: $spacing-md;
+  border-radius: $border-radius;
+  box-shadow: $box-shadow;
+  margin-bottom: $spacing-lg;
+
+  form {
+    display: flex;
+    gap: $spacing-md;
+    align-items: center;
+    flex-wrap: wrap;
+
+    label {
+      color: $text-color;
+      font-weight: 500;
+    }
+
+    input[type="date"], input[type="checkbox"] {
+      padding: $spacing-sm;
+      border: 1px solid $border-color;
+      border-radius: $border-radius;
+      transition: $transition;
+
+      &:focus {
+        outline: none;
+        border-color: $secondary-color;
+        box-shadow: 0 0 0 3px rgba($secondary-color, 0.2);
+      }
+    }
+
+    input[type="checkbox"] {
+      width: 20px;
+      height: 20px;
+    }
+  }
+}
+
+// Toggle buttons
+.toggle-buttons {
+  display: flex;
+  gap: $spacing-sm;
+  margin-bottom: $spacing-md;
+
+  button {
+    flex: 1;
+    padding: $spacing-md;
+    border: 1px solid $border-color;
+    border-radius: $border-radius;
+    background: white;
+    color: $text-color;
+    cursor: pointer;
+    transition: $transition;
+
+    &.active {
+      background: $secondary-color;
+      color: white;
+      border-color: $secondary-color;
+    }
+
+    &:hover:not(.active) {
+      background: $hover-color;
+    }
+  }
+}
+
+// Non-disponible results
+.non-dispo-results {
+  margin-top: $spacing-lg;
+
+  ul {
+    list-style: none;
+    padding: 0;
+
+    li {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: $spacing-md;
+      margin-bottom: $spacing-sm;
+      background: white;
+      border-radius: $border-radius;
+      box-shadow: $box-shadow;
+      transition: $transition;
+
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+      }
+    }
+  }
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .container {
+    padding: $spacing-md;
+  }
+
+  .filter-controls, .form-group-inline form, .pagination-controls, .toggle-buttons {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .disponibilite-list li, .non-dispo-results li {
+    flex-direction: column;
+    gap: $spacing-sm;
+    text-align: center;
+  }
+
+  .actions {
+    justify-content: center;
+  }
+}

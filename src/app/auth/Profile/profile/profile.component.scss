@@ -1,0 +1,52 @@
+// src/app/components/profile/profile.component.scss
+.profile-container {
+  padding: 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.profile-card {
+  padding: 2rem;
+  margin-bottom: 2rem;
+
+  mat-card-header {
+    margin-bottom: 1.5rem;
+  }
+
+  mat-card-title {
+    font-size: 1.5rem;
+    font-weight: 500;
+  }
+
+  .form-row {
+    display: flex;
+    gap: 1rem;
+
+    mat-form-field {
+      flex: 1;
+    }
+  }
+
+  mat-form-field {
+    width: 100%;
+    margin-bottom: 1rem;
+  }
+
+  .form-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 1rem;
+  }
+}
+
+.success-message {
+  color: #4caf50;
+  margin: 1rem 0;
+  text-align: center;
+}
+
+.error-message {
+  color: #f44336;
+  margin: 1rem 0;
+  text-align: center;
+}

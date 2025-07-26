@@ -1,0 +1,253 @@
+<div class="container">
+
+  <h2>Gestion des Disponibilités</h2>
+
+
+
+  <hr>
+
+  <h3>Disponibilités Actuelles du Technicien</h3>
+
+
+
+  <div class="filter-controls">
+
+    <label>Filtrer par :</label>
+
+    <button [class.active]="filterStatus === 'all'" (click)="setFilter('all')">Toutes</button>
+
+    <button [class.active]="filterStatus === 'disponible'" (click)="setFilter('disponible')">Disponibles</button>
+
+    <button [class.active]="filterStatus === 'non-disponible'" (click)="setFilter('non-disponible')">Non Disponibles</button>
+
+  </div>
+
+
+
+  <div class="disponibilite-list">
+
+    <p *ngIf="paginatedDisponibilites.length === 0">Aucune disponibilité à afficher pour le filtre sélectionné.</p>
+
+    <ul>
+
+      <li *ngFor="let dispo of paginatedDisponibilites"> <span>{{ dispo.date }} - <strong [class.disponible-text]="dispo.disponible" [class.non-disponible-text]="!dispo.disponible">{{ dispo.disponible ? 'Disponible' : 'Non disponible' }}</strong></span>
+
+        <div class="actions">
+
+          <button class="btn-modify" (click)="onModifyClick(dispo)">Modifier</button>
+
+          <button class="btn-delete" (click)="onDeleteClick(dispo)">Supprimer</button>
+
+        </div>
+
+      </li>
+
+    </ul>
+
+  </div>
+
+
+
+  <div class="pagination-controls" *ngIf="totalPages > 1">
+
+    <button (click)="prevPage()" [disabled]="currentPage === 1">Précédent</button>
+
+    <span>Page {{ currentPage }} sur {{ totalPages }}</span>
+
+    <button (click)="nextPage()" [disabled]="currentPage === totalPages">Suivant</button>
+
+  </div>
+
+
+
+  <div class="action-forms">
+
+    <h4>Action rapide pour la disponibilité sélectionnée:</h4>
+
+    <div class="form-group-inline">
+
+      <form [formGroup]="modifierForm" (ngSubmit)="modifierDisponibilite()" class="inline-form">
+
+        <label>Modifier ({{ selectedAvailabilityToModify?.date || 'Sélectionner' }}):</label>
+
+        <input type="date" formControlName="date" required>
+
+        <input type="checkbox" formControlName="disponible" id="disponible-modify-checkbox">
+
+        <label for="disponible-modify-checkbox">Disponible</label>
+
+        <button type="submit" [disabled]="modifierForm.invalid || !selectedAvailabilityToModify">Appliquer Modification</button>
+
+      </form>
+
+    </div>
+
+
+
+    <div class="form-group-inline">
+
+      <form [formGroup]="supprimerForm" (ngSubmit)="supprimerDisponibilite()" class="inline-form">
+
+        <label>Supprimer ({{ selectedAvailabilityToDelete?.date || 'Sélectionner' }}):</label>
+
+        <input type="date" formControlName="date" required readonly>
+
+        <button type="submit" [disabled]="supprimerForm.invalid || !selectedAvailabilityToDelete" class="btn-danger">Confirmer Suppression</button>
+
+      </form>
+
+    </div>
+
+  </div>
+
+
+
+  <hr>
+
+  <h3>Lister les Jours Non Disponibles</h3>
+
+  <p>Recherchez les jours où le technicien n'est pas disponible sur une période donnée.</p>
+
+  <form [formGroup]="nonDisponiblesForm" (ngSubmit)="getJoursNonDisponibles()">
+
+    <div>
+
+      <label for="nonDispoDateDebut">Date de début :</label>
+
+      <input id="nonDispoDateDebut" type="date" formControlName="dateDebut" required>
+
+    </div>
+
+    <div>
+
+      <label for="nonDispoDateFin">Date de fin :</label>
+
+      <input id="nonDispoDateFin" type="date" formControlName="dateFin" required>
+
+    </div>
+
+    <button type="submit" [disabled]="nonDisponiblesForm.invalid">Afficher les jours non disponibles</button>
+
+  </form>
+
+
+
+  <div class="non-dispo-results" *ngIf="nonDisponibilitesSearchResults.length > 0">
+
+    <h4>Résultats de la recherche :</h4>
+
+    <ul>
+
+      <li *ngFor="let dispo of nonDisponibilitesSearchResults">
+
+        <span>{{ dispo.date }} - <strong class="non-disponible-text">Non disponible</strong></span>
+
+        <div class="actions">
+
+          <button class="btn-modify" (click)="onModifyClick(dispo)">Modifier</button>
+
+          <button class="btn-delete" (click)="onDeleteClick(dispo)">Supprimer</button>
+
+        </div>
+
+      </li>
+
+    </ul>
+
+  </div>
+
+  <p *ngIf="nonDisponiblesForm.valid && nonDisponibilitesSearchResults.length === 0 && nonDisponiblesForm.dirty">
+
+    Aucun jour non disponible trouvé pour la période spécifiée.
+
+  </p>
+
+
+
+
+
+  <hr>
+
+  <h3>Ajouter des Disponibilités</h3>
+
+
+
+  <div class="toggle-buttons">
+
+    <button [class.active]="showAddSingleForm" (click)="toggleAddForm(true)">Ajouter une seule date</button>
+
+    <button [class.active]="!showAddSingleForm" (click)="toggleAddForm(false)">Ajouter en masse (période)</button>
+
+  </div>
+
+
+
+  <div *ngIf="showAddSingleForm" class="add-single-form">
+
+    <h4>Ajouter une seule disponibilité</h4>
+
+    <form [formGroup]="singleDisponibiliteForm" (ngSubmit)="ajouterDisponibiliteSingle()">
+
+      <div>
+
+        <label for="singleDate">Date :</label>
+
+        <input id="singleDate" type="date" formControlName="date" required>
+
+      </div>
+
+      <div>
+
+        <label for="singleDisponible">Disponible :</label>
+
+        <input id="singleDisponible" type="checkbox" formControlName="disponible">
+
+      </div>
+
+      <button type="submit" [disabled]="singleDisponibiliteForm.invalid">Ajouter la disponibilité</button>
+
+    </form>
+
+  </div>
+
+
+
+  <div *ngIf="!showAddSingleForm" class="add-masse-form">
+
+    <h4>Ajouter des disponibilités en masse</h4>
+
+    <form [formGroup]="masseForm" (ngSubmit)="ajouterDisponibilitesEnMasse()">
+
+      <div>
+
+        <label for="masseDateDebut">Date de début :</label>
+
+        <input id="masseDateDebut" type="date" formControlName="dateDebut" required>
+
+      </div>
+
+      <div>
+
+        <label for="masseDateFin">Date de fin :</label>
+
+        <input id="masseDateFin" type="date" formControlName="dateFin" required>
+
+      </div>
+
+      <div>
+
+        <label for="masseDisponible">Disponible :</label>
+
+        <input id="masseDisponible" type="checkbox" formControlName="disponible">
+
+      </div>
+
+      <button type="submit" [disabled]="masseForm.invalid">Ajouter en masse</button>
+
+    </form>
+
+  </div>
+
+
+
+</div>

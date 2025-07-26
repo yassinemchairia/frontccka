@@ -1,0 +1,69 @@
+<div class="interventions-container">
+  <h2>Liste des interventions</h2>
+
+  <table *ngIf="interventions.length > 0" class="intervention-table">
+    <!-- En-têtes du tableau -->
+    <thead>
+      <tr>
+        <th>Date début</th>
+        <th>Date fin</th>
+        <th>Statut</th>
+        <th>Type</th>
+        <th>Priorité</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+
+    <!-- Corps du tableau -->
+    <tbody>
+      <ng-container *ngFor="let intervention of interventions">
+        <!-- Ligne d'intervention -->
+        <tr>
+          <td>{{ intervention.dateDebut | date: 'shortDate' }}</td>
+          <td>{{ intervention.dateFin ? (intervention.dateFin | date: 'shortDate') : '—' }}</td>
+          <td>
+            <span class="badge" [ngClass]="intervention.statut.toLowerCase()">
+              {{ intervention.statut }}
+            </span>
+          </td>
+          <td>{{ intervention.typeIntervention }}</td>
+          <td>
+            <span class="priority" [ngClass]="intervention.priorite.toLowerCase()">
+              {{ intervention.priorite }}
+            </span>
+          </td>
+          <td>
+            <button (click)="showTechniciens(intervention.idInterv)">
+              Voir techniciens
+            </button>
+          </td>
+        </tr>
+
+        <!-- Ligne des techniciens -->
+        <tr *ngIf="techniciensAffectes[intervention.idInterv]" class="techniciens-row">
+          <td colspan="6">
+            <strong>Techniciens affectés :</strong>
+            <div *ngFor="let tech of techniciensAffectes[intervention.idInterv]" 
+                 class="technicien-card"
+                 (click)="navigateToTechnicienStats(tech.idUser)">
+              <div class="name">
+                <span>👨‍🔧</span>
+                {{ tech.nom }} {{ tech.prenom }}
+              </div>
+              <div class="specialite">
+                {{ tech.specialite }}
+              </div>
+              <div class="stats-link">
+                → Voir statistiques
+              </div>
+            </div>
+          </td>
+        </tr>
+      </ng-container>
+    </tbody>
+  </table>
+
+  <div *ngIf="interventions.length === 0" class="empty-message">
+    Aucune intervention trouvée.
+  </div>
+</div>

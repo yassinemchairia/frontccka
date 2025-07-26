@@ -1,0 +1,174 @@
+<div class="statistics-container">
+  <div class="header">
+    <h2>Statistiques des Techniciens</h2>
+    <p class="subtitle">Vue d'ensemble des performances et disponibilités</p>
+  </div>
+
+  <div class="stats-grid">
+    <!-- Summary Cards -->
+    <div class="summary-card">
+      <div class="summary-item">
+        <div class="summary-icon" style="background-color: #4e73df;">
+          <i class="fas fa-tools"></i>
+        </div>
+        <div class="summary-content">
+          <h3>Techniciens</h3>
+          <p>{{ objectKeys(interventionsByTech).length }}</p>
+        </div>
+      </div>
+      
+      <div class="summary-item">
+        <div class="summary-icon" style="background-color: #1cc88a;">
+          <i class="fas fa-smile"></i>
+        </div>
+        <div class="summary-content">
+          <h3>Satisfaction moyenne</h3>
+          <p>{{ averageSatisfaction() | number:'1.1-1' }}/10</p>
+        </div>
+      </div>
+      
+      <div class="summary-item">
+        <div class="summary-icon" style="background-color: #36b9cc;">
+          <i class="fas fa-calendar-check"></i>
+        </div>
+        <div class="summary-content">
+          <h3>Disponibilité moyenne</h3>
+          <p>{{ averageAvailability() | number:'1.0-0' }}%</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Interventions Chart -->
+    <div class="chart-card">
+      <div class="chart-header">
+        <h3>Interventions par technicien</h3>
+      </div>
+      <div class="chart-container">
+        <canvas baseChart 
+          [data]="interventionsChartData" 
+          [type]="'bar'" 
+          [options]="barChartOptions">
+        </canvas>
+      </div>
+    </div>
+
+    <!-- Satisfaction Chart -->
+    <div class="chart-card">
+      <div class="chart-header">
+        <h3>Satisfaction par technicien</h3>
+      </div>
+      <div class="chart-container">
+        <canvas baseChart 
+          [data]="satisfactionChartData" 
+          [type]="'bar'" 
+          [options]="barChartOptions">
+        </canvas>
+      </div>
+    </div>
+
+    <!-- Availability Chart -->
+    <div class="chart-card">
+      <div class="chart-header">
+        <h3>Disponibilité des techniciens</h3>
+      </div>
+      <div class="chart-container">
+        <canvas baseChart 
+          [data]="availabilityChartData" 
+          [type]="'doughnut'" 
+          [options]="doughnutChartOptions">
+        </canvas>
+      </div>
+    </div>
+
+    <!-- Specialite Chart -->
+    <div class="chart-card">
+      <div class="chart-header">
+        <h3>Spécialités les plus sollicitées</h3>
+      </div>
+      <div class="chart-container">
+        <canvas baseChart 
+          [data]="specialiteChartData" 
+          [type]="'pie'" 
+          [options]="doughnutChartOptions">
+        </canvas>
+      </div>
+    </div>
+
+    <!-- Techniciens List -->
+    <div class="details-card">
+      <h3>Détails par technicien</h3>
+      
+      <div class="tech-list">
+        <div class="tech-item" *ngFor="let tech of fullStats" (click)="showTechDetails(tech)">
+          <div class="tech-info">
+            <span class="tech-name">{{ tech.nom }}</span>
+            <span class="tech-specialite">{{ tech.specialite }}</span>
+          </div>
+          <div class="tech-stats">
+            <span class="stat-badge">{{ tech.nbInterventions }} interventions</span>
+            <span class="stat-badge" [style.background-color]="getSatisfactionColor(tech.satisfactionMoyenne || 0)">
+              {{ tech.satisfactionMoyenne || 0 | number:'1.1-1' }}/10
+            </span>
+            <span class="stat-badge">{{ tech.disponibilite || 0 | number:'1.0-0' }}% dispo</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Technicien Details Modal -->
+    <div class="modal-overlay" *ngIf="selectedTech">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>Détails du technicien</h3>
+          <button class="close-btn" (click)="selectedTech = null">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        
+        <div class="modal-body">
+          <div class="tech-details">
+            <h4>{{ selectedTech.nom }}</h4>
+            <p>Spécialité: {{ selectedTech.specialite }}</p>
+            
+            <div class="detail-row">
+              <div class="detail-col">
+                <p class="detail-value">{{ selectedTech.nbInterventions }}</p>
+                <p class="detail-label">Interventions</p>
+              </div>
+              <div class="detail-col">
+                <p class="detail-value">{{ selectedTech.dureeMoyenne }}</p>
+                <p class="detail-label">Durée moyenne</p>
+              </div>
+              <div class="detail-col">
+                <p class="detail-value">{{ selectedTech.tauxReussite }}</p>
+                <p class="detail-label">Taux de réussite</p>
+              </div>
+            </div>
+            
+            <div class="stats-section">
+              <h5>Répartition par priorité</h5>
+              <div class="progress-container" *ngFor="let key of objectKeys(selectedTech.statsParPriorite)">
+                <span class="progress-label">{{ formatEnum(key) }}</span>
+                <div class="progress-bar">
+                  <div class="progress-fill" [style.width.%]="(selectedTech.statsParPriorite[key] / selectedTech.nbInterventions) * 100"></div>
+                </div>
+                <span class="progress-value">{{ selectedTech.statsParPriorite[key] }}</span>
+              </div>
+            </div>
+            
+            <div class="stats-section">
+              <h5>Répartition par type</h5>
+              <div class="progress-container" *ngFor="let key of objectKeys(selectedTech.statsParType)">
+                <span class="progress-label">{{ formatEnum(key) }}</span>
+                <div class="progress-bar">
+                  <div class="progress-fill" [style.width.%]="(selectedTech.statsParType[key] / selectedTech.nbInterventions) * 100"></div>
+                </div>
+                <span class="progress-value">{{ selectedTech.statsParType[key] }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

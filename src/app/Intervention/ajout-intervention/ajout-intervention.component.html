@@ -1,0 +1,85 @@
+<h2>Ajouter une intervention</h2>
+<form (ngSubmit)="onSubmit()" #formIntervention="ngForm">
+
+  <label>Mode de sélection :</label>
+  <select [(ngModel)]="modeSelection" name="modeSelection" required (ngModelChange)="onModeSelectionChange()">
+    <option value="manuel">Sélection manuelle</option>
+    <option value="ia">Utiliser IA</option>
+  </select>
+
+  <div *ngIf="modeSelection === 'manuel'">
+    <label>Techniciens :</label>
+    <div class="technician-list" *ngFor="let technicien of techniciens">
+      <input type="checkbox"
+             [value]="technicien.idUser"
+             (change)="onTechnicienChange($event)">
+      <span>{{ technicien.nom }} ({{ technicien.specialite }})</span>
+      <button type="button" class="voir-stats-btn" (click)="ouvrirStats(technicien.idUser)">Voir Statistique</button>
+    </div>
+
+    <label>Date de début :</label>
+    <input type="datetime-local" [(ngModel)]="intervention.dateDebut" name="dateDebut" required>
+
+    <label>Priorité :</label>
+    <select [(ngModel)]="intervention.priorite" name="priorite" required>
+      <option value="BASSE">BASSE</option>
+      <option value="MOYENNE">MOYENNE</option>
+      <option value="ELEVEE">ELEVEE</option>
+    </select>
+
+    <label>Type d'intervention :</label>
+    <select [(ngModel)]="intervention.typeIntervention" name="typeIntervention" required>
+      <option value="PREVENTIVE">PREVENTIVE</option>
+      <option value="CORRECTIVE">CORRECTIVE</option>
+    </select>
+  </div>
+
+  <div *ngIf="modeSelection === 'ia'">
+    <label>Spécialité :</label>
+    <select [(ngModel)]="specialite" name="specialite" required>
+      <option value="ELECTRICITE">ELECTRICITE</option>
+      <option value="CLIMATISATION">CLIMATISATION</option>
+      <option value="ENVIRONNEMENT">ENVIRONNEMENT</option>
+    </select>
+
+    <label>Priorité :</label>
+    <select [(ngModel)]="intervention.priorite" name="priorite" required>
+      <option value="BASSE">BASSE</option>
+      <option value="MOYENNE">MOYENNE</option>
+      <option value="ELEVEE">ELEVEE</option>
+    </select>
+
+    <label>Type d'intervention :</label>
+    <select [(ngModel)]="intervention.typeIntervention" name="typeIntervention" required>
+      <option value="PREVENTIVE">PREVENTIVE</option>
+      <option value="CORRECTIVE">CORRECTIVE</option>
+    </select>
+
+    <label>Date de début :</label>
+    <input type="datetime-local" [(ngModel)]="intervention.dateDebut" name="dateDebut" required>
+
+    <label>Durée estimée (heures) :</label>
+    <input type="number" [(ngModel)]="dureeEstimee" name="dureeEstimee" min="1" required>
+
+    <button type="button" class="ai-button" (click)="utiliserIA()">Obtenir un technicien IA</button>
+
+    <div *ngIf="techniciensIA.length > 0" class="ai-suggestions">
+      <h5>Techniciens proposés par IA :</h5>
+      <div class="technician-item" *ngFor="let tech of techniciensIA">
+        <label>
+          <input type="checkbox"
+                 [value]="tech.idUser"
+                 (change)="onTechnicienChange($event)">
+          <span>{{ tech.nom }} {{ tech.prenom }}</span>
+        </label>
+        <button type="button" class="voir-stats-btn" (click)="ouvrirStats(tech.idUser)">Voir Statistique</button>
+      </div>
+    </div>
+  </div>
+
+  <p *ngIf="intervention.techniciens.length > 0" class="selected-count">
+    Techniciens sélectionnés : {{ intervention.techniciens.length }}
+  </p>
+
+  <button type="submit" class="submit-button">Ajouter Intervention</button>
+</form>

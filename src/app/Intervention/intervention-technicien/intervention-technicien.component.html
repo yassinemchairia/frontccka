@@ -1,0 +1,257 @@
+<nb-card class="intervention-card-container">
+  <nb-card-header>
+    <h2>Mes Interventions</h2>
+    <button nbButton status="primary" (click)="viewInCalendar()">
+      <nb-icon icon="calendar-outline"></nb-icon> Voir dans le calendrier
+    </button>
+  </nb-card-header>
+  <nb-card-body>
+    <!-- Message d'information -->
+    <nb-alert *ngIf="message" status="warning" class="alert-message">
+      {{ message }}
+    </nb-alert>
+
+    <!-- Search Bar -->
+    <div class="search-container">
+      <nb-form-field>
+        <input nbInput fullWidth placeholder="Rechercher dans l'historique..." [(ngModel)]="searchTerm" name="searchTerm" (input)="searchHistoriques()">
+        <nb-icon nbSuffix icon="search-outline"></nb-icon>
+      </nb-form-field>
+    </div>
+
+    <!-- Search Results -->
+    <div *ngIf="searchResults.length > 0" class="search-results">
+      <h3>Résultats de la recherche</h3>
+      <nb-card *ngFor="let historique of searchResults" class="historique-card" @expandCollapse>
+        <nb-card-body>
+          <div class="historique-details">
+            <div class="detail-item">
+              <nb-icon icon="file-text-outline"></nb-icon>
+              <div>
+                <strong>Rapport</strong>
+                <p>{{ historique.rapport }}</p>
+              </div>
+            </div>
+            <div class="detail-item">
+              <nb-icon icon="edit-outline"></nb-icon>
+              <div>
+                <strong>Description</strong>
+                <p>{{ historique.description }}</p>
+              </div>
+            </div>
+            <div class="detail-item">
+              <nb-icon icon="clock-outline"></nb-icon>
+              <div>
+                <strong>Date</strong>
+                <p>{{ historique.dateAction | date:'medium' }}</p>
+              </div>
+            </div>
+            <div class="detail-item">
+              <nb-icon icon="award-outline"></nb-icon>
+              <div>
+                <strong>Statut</strong>
+                <p [ngClass]="{
+                  'statut-encours': historique.statut === 'EN_COURS',
+                  'statut-terminee': historique.statut === 'TERMINEE'
+                }">
+                  {{ historique.statut }}
+                </p>
+              </div>
+            </div>
+            <div class="detail-item">
+              <nb-icon icon="people-outline"></nb-icon>
+              <div>
+                <strong>Techniciens</strong>
+                <p>{{ historique.techniciens.join(', ') }}</p>
+              </div>
+            </div>
+          </div>
+        </nb-card-body>
+      </nb-card>
+    </div>
+
+    <!-- Liste des interventions -->
+    <div class="intervention-grid">
+      <nb-card *ngFor="let intervention of interventions" class="intervention-card" @expandCollapse>
+        <nb-card-body>
+          <div class="intervention-details">
+            <div class="detail-item">
+              <nb-icon icon="calendar-outline"></nb-icon>
+              <div>
+                <strong>Date Début</strong>
+                <p>{{ intervention.dateDebut | date:'medium' }}</p>
+              </div>
+            </div>
+            <div class="detail-item">
+              <nb-icon icon="calendar-outline"></nb-icon>
+              <div>
+                <strong>Date Fin</strong>
+                <p [ngClass]="{'date-container': true, 'with-warning': !intervention.dateFin}">
+                  {{ intervention.dateFin ? (intervention.dateFin | date:'medium') : 'Non définie' }}
+                  <i *ngIf="!intervention.dateFin" class="fas fa-hourglass-half en-cours-indicator"></i>
+                </p>
+              </div>
+            </div>
+            <div class="detail-item">
+              <nb-icon icon="exclamation-circle-outline"></nb-icon>
+              <div>
+                <strong>Priorité</strong>
+                <p [ngClass]="{
+                  'priorite-basse': intervention.priorite === 'BASSE',
+                  'priorite-moyenne': intervention.priorite === 'MOYENNE',
+                  'priorite-elevee': intervention.priorite === 'ELEVEE'
+                }">
+                  {{ intervention.priorite }}
+                </p>
+              </div>
+            </div>
+            <div class="detail-item">
+              <nb-icon icon="award-outline"></nb-icon>
+              <div>
+                <strong>Statut</strong>
+                <p [ngClass]="{
+                  'statut-encours': intervention.statut === 'EN_COURS',
+                  'statut-terminee': intervention.statut === 'TERMINEE'
+                }">
+                  {{ intervention.statut }}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Historique Section -->
+          <div class="historique-section">
+            <button nbButton status="info" (click)="toggleHistorique(intervention.idInterv)">
+              <nb-icon [icon]="showForm[intervention.idInterv] ? 'chevron-up-outline' : 'chevron-down-outline'"></nb-icon>
+              {{ showForm[intervention.idInterv] ? 'Masquer Historique' : 'Voir Historique' }}
+            </button>
+            <div *ngIf="showForm[intervention.idInterv]" class="historique-content" @expandCollapse>
+              <!-- Historique List -->
+              <div *ngIf="historiques[intervention.idInterv]?.length > 0; else noHistorique">
+                <nb-card *ngFor="let historique of historiques[intervention.idInterv]" class="historique-card">
+                  <nb-card-body>
+                    <div class="historique-details">
+                      <div class="detail-item">
+                        <nb-icon icon="file-text-outline"></nb-icon>
+                        <div>
+                          <strong>Rapport</strong>
+                          <p>{{ historique.rapport }}</p>
+                        </div>
+                      </div>
+                      <div class="detail-item">
+                        <nb-icon icon="edit-outline"></nb-icon>
+                        <div>
+                          <strong>Description</strong>
+                          <p>{{ historique.description }}</p>
+                        </div>
+                      </div>
+                      <div class="detail-item">
+                        <nb-icon icon="clock-outline"></nb-icon>
+                        <div>
+                          <strong>Date</strong>
+                          <p>{{ historique.dateAction | date:'medium' }}</p>
+                        </div>
+                      </div>
+                      <div class="detail-item">
+                        <nb-icon icon="award-outline"></nb-icon>
+                        <div>
+                          <strong>Statut</strong>
+                          <p [ngClass]="{
+                            'statut-encours': historique.statut === 'EN_COURS',
+                            'statut-terminee': historique.statut === 'TERMINEE'
+                          }">
+                            {{ historique.statut }}
+                          </p>
+                        </div>
+                      </div>
+                      <div class="detail-item">
+                        <nb-icon icon="people-outline"></nb-icon>
+                        <div>
+                          <strong>Techniciens</strong>
+                          <p>{{ historique.techniciens.join(', ') }}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </nb-card-body>
+                </nb-card>
+              </div>
+              <ng-template #noHistorique>
+                <p class="no-results">Aucun historique pour cette intervention.</p>
+              </ng-template>
+
+              <!-- Historique Actions -->
+              <div class="historique-actions" *ngIf="intervention.statut !== 'TERMINEE'">
+                <button nbButton status="success" (click)="toggleAddHistoriqueForm(intervention.idInterv)">
+                  <nb-icon icon="plus-outline"></nb-icon>
+                  {{ showAddForm[intervention.idInterv] ? 'Masquer Formulaire Historique' : 'Ajouter Historique' }}
+                </button>
+                <button nbButton status="warning" (click)="toggleRapportForm(intervention.idInterv)">
+                  <nb-icon icon="file-text-outline"></nb-icon>
+                  {{ showRapportForm[intervention.idInterv] ? 'Masquer Formulaire Rapport' : 'Terminer Intervention' }}
+                </button>
+              </div>
+
+              <!-- Historique Form -->
+              <div *ngIf="showAddForm[intervention.idInterv]" class="historique-form-container" @expandCollapse>
+                <form class="historique-form" #historiqueForm="ngForm">
+                  <nb-form-field>
+                    <label>Rapport</label>
+                    <input nbInput fullWidth [(ngModel)]="newHistorique.rapport" name="rapport" required placeholder="Description de l'action...">
+                  </nb-form-field>
+                  <nb-form-field>
+                    <label>Description</label>
+                    <textarea nbInput fullWidth [(ngModel)]="newHistorique.description" name="description" required placeholder="Notes sur l'évolution..."></textarea>
+                  </nb-form-field>
+                  <nb-form-field>
+                    <label>Statut</label>
+                    <nb-select fullWidth [(ngModel)]="newHistorique.statut" name="statut" required>
+                      <nb-option value="EN_COURS">En Cours</nb-option>
+                      <nb-option value="TERMINEE">Terminée</nb-option>
+                    </nb-select>
+                  </nb-form-field>
+                  <div class="form-actions">
+                    <button nbButton status="success" (click)="ajouterHistorique(intervention.idInterv)" [disabled]="historiqueForm.invalid">Confirmer</button>
+                    <button nbButton status="danger" (click)="resetHistoriqueForm(); toggleAddHistoriqueForm(intervention.idInterv)">Annuler</button>
+                  </div>
+                </form>
+              </div>
+
+              <!-- Rapport Form -->
+              <div *ngIf="showRapportForm[intervention.idInterv]" class="historique-form-container" @expandCollapse>
+                <form class="historique-form" #rapportForm="ngForm">
+                  <nb-form-field>
+                    <label>Détails</label>
+                    <textarea nbInput fullWidth [(ngModel)]="newRapport.details" name="details" required placeholder="Détails du rapport final..."></textarea>
+                  </nb-form-field>
+                  <nb-form-field>
+                    <label>Coût de l'intervention (DNR)</label>
+                    <input nbInput fullWidth type="number" [(ngModel)]="newRapport.coutIntervention" name="coutIntervention" required min="0" step="0.01" placeholder="Coût total...">
+                  </nb-form-field>
+                  <nb-form-field>
+                    <label>Satisfaction (1-5)</label>
+                    <nb-select fullWidth [(ngModel)]="newRapport.satisfaction" name="satisfaction" required>
+                      <nb-option [value]="1">1</nb-option>
+                      <nb-option [value]="2">2</nb-option>
+                      <nb-option [value]="3">3</nb-option>
+                      <nb-option [value]="4">4</nb-option>
+                      <nb-option [value]="5">5</nb-option>
+                    </nb-select>
+                  </nb-form-field>
+                  <div class="form-actions">
+                    <button nbButton status="success" (click)="ajouterRapport(intervention.idInterv)" [disabled]="rapportForm.invalid">Confirmer</button>
+                    <button nbButton status="danger" (click)="resetRapportForm(); toggleRapportForm(intervention.idInterv)">Annuler</button>
+                  </div>
+                </form>
+              </div>
+
+              <!-- Warning for Terminated Interventions -->
+              <nb-alert *ngIf="intervention.statut === 'TERMINEE'" status="warning">
+                Impossible de modifier une intervention terminée.
+              </nb-alert>
+            </div>
+          </div>
+        </nb-card-body>
+      </nb-card>
+    </div>
+  </nb-card-body>
+</nb-card>
