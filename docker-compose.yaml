@@ -3,7 +3,7 @@ version: "3"
 services:
   mysqldb:
     image: mysql:8
-    container_name: db_mysql
+    container_name: db_mysql1
     hostname: db_mysql
     restart: unless-stopped
 
@@ -18,7 +18,7 @@ services:
       - mysql_data:/var/lib/mysql  
   springboot:
     image: yassinemchairia/bcc1
-    container_name: springboot
+    container_name: springboot1
     hostname: springboot
     restart: unless-stopped
 
@@ -34,7 +34,7 @@ services:
   
   angular:
     image: yassinemchairia/frontcck:latest
-    container_name: angular_app
+    container_name: angular_app1
     hostname: angular_app
     restart: unless-stopped
 
