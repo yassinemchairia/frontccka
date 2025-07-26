@@ -11,13 +11,13 @@ services:
       - 3306:3306
   
     environment:
-      - MYSQL_DATABASE=db
+      - MYSQL_DATABASE=cckprojet
       - DATABASE_DRIVER=com.mysql.cj.jdbc.Driver
       - MYSQL_ALLOW_EMPTY_PASSWORD=true
     volumes:
       - mysql_data:/var/lib/mysql  
   springboot:
-    image: iheb1999/ihebissaouiii-5se1-group5-careforeldres:v0
+    image: yassinemchairia/bcc1:v0
     container_name: springboot
     hostname: springboot
     restart: unless-stopped
@@ -33,7 +33,7 @@ services:
 
   
   angular:
-    image: iheb1999/ihebissaouii-5se1-group5-careforeldresfront:v0
+    image: yassinemchairia/frontcck:latest
     container_name: angular_app
     hostname: angular_app
     restart: unless-stopped
