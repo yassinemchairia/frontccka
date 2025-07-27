@@ -45,7 +45,7 @@ services:
       - springboot
 
   mosquitto:
-    image: eclipse-mosquitto1
+    image: eclipse-mosquitto
     container_name: mosquitto1
     hostname: mosquitto
     restart: unless-stopped
