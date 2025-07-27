@@ -27,6 +27,7 @@ services:
    
     depends_on:
       - mysqldb
+      - mosquitto
      
 
 
@@ -42,7 +43,18 @@ services:
       - "4200:80"
     depends_on:
       - springboot
-      
+
+  mosquitto:
+    image: eclipse-mosquitto
+    container_name: mosquitto
+    hostname: mosquitto
+    restart: unless-stopped
+    ports:
+      - "1883:1883"
+    volumes:
+      - mosquitto_data:/mosquitto
+
 volumes:
   mysql_data:
+  mosquitto_data:
    
