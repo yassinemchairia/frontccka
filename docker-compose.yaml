@@ -17,8 +17,8 @@ services:
     volumes:
       - mysql_data:/var/lib/mysql  
   springboot:
-    image: yassinemchairia/bcc1:v1
-    container_name: springboot1
+    image: yassinemchairia/bcc2:v2
+    container_name: springboot2
     hostname: springboot
     restart: unless-stopped
 
@@ -35,7 +35,7 @@ services:
   
   angular:
     image: yassinemchairia/frontcck1:latest
-    container_name: angular_app1
+    container_name: angular_app2
     hostname: angular_app
     restart: unless-stopped
 
