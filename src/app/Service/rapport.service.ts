@@ -10,7 +10,7 @@ import { catchError } from 'rxjs/operators';
 })
 export class RapportService {
 
- private apiUrl = 'http://localhost:8087/api/rapport';
+ private apiUrl = 'http://192.168.107.129:8087/api/rapport';
 
   constructor(private http: HttpClient) { }
 
