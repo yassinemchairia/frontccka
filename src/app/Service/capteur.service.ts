@@ -23,7 +23,7 @@ export class CapteurService implements OnDestroy {
 
   private initializeStompClient(): void {
     this.stompClient = new Client({
-      webSocketFactory: () => new SockJS('http://localhost:8087/ws/capteurs'),
+      webSocketFactory: () => new SockJS('http://192.168.107.129:8087/ws/capteurs'),
       reconnectDelay: this.RECONNECT_DELAY,
       debug: (msg: string) => console.log('[STOMP]', msg),
       onConnect: () => this.handleSuccessfulConnection(),
