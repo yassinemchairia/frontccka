@@ -35,8 +35,8 @@ export enum NotificationType {
   providedIn: 'root'
 })
 export class NotificationService {
-  private apiUrl = 'http://localhost:8087/api';
-  private wsUrl = 'http://localhost:8087/ws/notifications';
+  private apiUrl = 'http://192.168.107.129:8087/api';
+  private wsUrl = 'http://192.168.107.129:8087/ws/notifications';
   private stompClient: Client | null = null;
   private notificationsSubject = new BehaviorSubject<Notification[]>([]);
   private unreadCountSubject = new BehaviorSubject<number>(0);
