@@ -9,7 +9,7 @@ import { UpdateProfileRequest } from './update-profile-request.model';
   providedIn: 'root'
 })
 export class ProfileService {
-  private apiUrl = 'http://localhost:8087/api/profile';
+  private apiUrl = 'http://192.168.107.129:8087/api/profile';
 
   constructor(private http: HttpClient) {}
 
