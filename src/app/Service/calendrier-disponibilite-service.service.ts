@@ -8,7 +8,7 @@ import { Technicien } from '../../app/Service/technicien.model';
   providedIn: 'root'
 })
 export class CalendrierDisponibiliteServiceService {
-  private apiUrl = 'http://localhost:8087/api/disponibilites'; // à adapter
+  private apiUrl = 'http://192.168.107.129:8087/api/disponibilites'; // à adapter
 
   constructor(private http: HttpClient) {}
 
