@@ -18,7 +18,7 @@ export interface Intervention1DTO {
   providedIn: 'root',
 })
 export class AlertService {
-  private apiUrl = 'http://localhost:8087/alertes';
+  private apiUrl = 'http://192.168.107.129:8087/alertes';
   private flaskApiUrl = 'http://localhost:5000/predict_solution';
 
   constructor(private http: HttpClient) {}
