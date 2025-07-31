@@ -34,8 +34,8 @@ export interface Utilisateur {
 })
 export class TechnicienStatsService {
 
-  private apiUrl = 'http://localhost:8087/api/stats/technicien'; // Remplacez par l'URL de votre API
-  private ApiUrl = 'http://localhost:8087/api/stats/technicien'; // Remplacez par l'URL de votre API
+  private apiUrl = 'http://192.168.107.129:8087/api/stats/technicien'; // Remplacez par l'URL de votre API
+  private ApiUrl = 'http://192.168.107.129:8087/api/stats/technicien'; // Remplacez par l'URL de votre API
 
   constructor(private http: HttpClient, private authService: AuthService) {}
 
