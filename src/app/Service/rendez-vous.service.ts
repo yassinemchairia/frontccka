@@ -8,7 +8,7 @@ import { AutoPlanificationRequest, RendezVous, RendezVousRequest, SuggestionResp
   providedIn: 'root'
 })
 export class RendezVousService {
-  private apiUrl = 'http://localhost:8087/api/rendezvous';
+  private apiUrl = 'http://192.168.107.129:8087/api/rendezvous';
 
   constructor(private http: HttpClient) { }
 
