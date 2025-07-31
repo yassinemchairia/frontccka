@@ -8,7 +8,7 @@ import { map } from 'rxjs/operators';
 })
 export class TechnicienStatisticsService {
 
-  private apiUrl = 'http://localhost:8087'; // Update with your API endpoint
+  private apiUrl = 'http://192.168.107.129:8087'; // Update with your API endpoint
 
   constructor(private http: HttpClient) { }
 
