@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class CapteurStatisticsService {
-  private apiUrl = 'http://localhost:8087/api/statistics/capteurs'; // Update with your API endpoint
+  private apiUrl = 'http://192.168.107.129:8087/api/statistics/capteurs'; // Update with your API endpoint
 
   constructor(private http: HttpClient) { }
 
