@@ -15,8 +15,8 @@ services:
       - mysql_data:/var/lib/mysql  
 
   springboot:
-    image: yassinemchairia/bcc6:v6
-    container_name: springboot6
+    image: yassinemchairia/bcc7:v7
+    container_name: springboot7
     hostname: springboot
     restart: unless-stopped
     ports:
@@ -30,8 +30,8 @@ services:
       - SPRING_DATASOURCE_PASSWORD=
 
   angular:
-    image: yassinemchairia/frontcck6:latest
-    container_name: angular_app6
+    image: yassinemchairia/frontcck7:latest
+    container_name: angular_app7
     hostname: angular_app
     restart: unless-stopped
     ports:
