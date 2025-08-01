@@ -4,7 +4,7 @@ import random
 import json
 
 # MQTT Broker settings
-broker = "mosquitto1"  # Change to "broker.hivemq.com" for cloud testing
+broker = "mosquitto"  # Change to "broker.hivemq.com" for cloud testing
 port = 1883
 client_id = "sensor-simulator"
 
