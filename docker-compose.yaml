@@ -15,8 +15,8 @@ services:
       - mysql_data:/var/lib/mysql  
 
   springboot:
-    image: yassinemchairia/bcc7:v7
-    container_name: springboot7
+    image: yassinemchairia/bcc8:v8
+    container_name: springboot8
     hostname: springboot
     restart: unless-stopped
     ports:
@@ -26,8 +26,8 @@ services:
       - mosquitto
 
   angular:
-    image: yassinemchairia/frontcck7:latest
-    container_name: angular_app7
+    image: yassinemchairia/frontcck8:latest
+    container_name: angular_app8
     hostname: angular_app
     restart: unless-stopped
     ports:
