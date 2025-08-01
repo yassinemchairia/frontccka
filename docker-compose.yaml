@@ -1,43 +1,39 @@
-version: "3"
+version: "3.8"  # Utilisation de la version 3.8 pour les dernières fonctionnalités
 services:
   mysqldb:
     image: mysql:8
     container_name: db_mysql1
     hostname: db_mysql
     restart: unless-stopped
-
     ports:
-      - 3306:3306
-  
+      - "3306:3306"
     environment:
       - MYSQL_DATABASE=cckprojet
       - DATABASE_DRIVER=com.mysql.cj.jdbc.Driver
       - MYSQL_ALLOW_EMPTY_PASSWORD=true
     volumes:
       - mysql_data:/var/lib/mysql  
+
   springboot:
     image: yassinemchairia/bcc6:v6
     container_name: springboot6
     hostname: springboot
     restart: unless-stopped
-
     ports:
       - "8087:8087"
-   
     depends_on:
       - mysqldb
       - mosquitto
-     
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db_mysql1:3306/cckprojet?createDatabaseIfNotExist=true&zeroDateTimeBehavior=CONVERT_TO_NULL&serverTimezone=UTC
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=
 
-
-
-  
   angular:
     image: yassinemchairia/frontcck6:latest
     container_name: angular_app6
     hostname: angular_app
     restart: unless-stopped
-
     ports:
       - "4200:80"
     depends_on:
@@ -45,15 +41,31 @@ services:
 
   mosquitto:
     image: eclipse-mosquitto
-    container_name: mosquitto1
+    container_name: mosquitto1  # Aligné avec les logs
     hostname: mosquitto
     restart: unless-stopped
     ports:
       - "1883:1883"
     volumes:
-    - mosquitto_data:/mosquitto
-    - ./mosquitto.conf:/mosquitto/config/mosquitto.conf
+      - mosquitto_data:/mosquitto
+      - ./mosquitto.conf:/mosquitto/config/mosquitto.conf
+
+  sensor_simulator:
+    build:
+      context: ./python_sensor  
+      dockerfile: Dockerfile
+    container_name: sensor_simulator
+    hostname: sensor_simulator
+    restart: unless-stopped
+    depends_on:
+      - mosquitto
+    networks:
+      - default
 
 volumes:
   mysql_data:
   mosquitto_data:
+
+networks:
+  default:
+    driver: bridge
