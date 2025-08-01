@@ -1,53 +1,47 @@
 version: "3"
 services:
-  mysqldb:
-    image: mysql:8
-    container_name: db_mysql1
-    hostname: db_mysql
-    restart: unless-stopped
-
+  mysqldb:
+    image: mysql:8
+    container_name: db_mysql1
+    hostname: db_mysql
+    restart: unless-stopped
     ports:
       - 3306:3306
-  
-    environment:
-      - MYSQL_DATABASE=cckprojet
-      - DATABASE_DRIVER=com.mysql.cj.jdbc.Driver
-      - MYSQL_ALLOW_EMPTY_PASSWORD=true
-    volumes:
-      - mysql_data:/var/lib/mysql
-
-  springboot:
-    image: yassinemchairia/bcc9:v9
-    container_name: springboot9
-    hostname: springboot
-    restart: unless-stopped
-    ports:
-      - "8087:8087"
-   
-    depends_on:
-      - mysqldb
-      - mosquitto
-     
-  
-  angular:
-    image: yassinemchairia/frontcck9:latest
-    container_name: angular_app9
-    hostname: angular_app
-    restart: unless-stopped
-    ports:
-      - "4200:80"
-    depends_on:
-      - springboot
-  mosquitto:
-    image: eclipse-mosquitto
-    container_name: mosquitto1
-    hostname: mosquitto
-    restart: unless-stopped
-    ports:
-      - "1883:1883"
-    volumes:
-    - mosquitto_data:/mosquitto
-    - ./mosquitto.conf:/mosquitto/config/mosquitto.conf
+    environment:
+      - MYSQL_DATABASE=cckprojet
+      - DATABASE_DRIVER=com.mysql.cj.jdbc.Driver
+      - MYSQL_ALLOW_EMPTY_PASSWORD=true
+    volumes:
+      - mysql_data:/var/lib/mysql
+  springboot:
+    image: yassinemchairia/bcc9:v9
+    container_name: springboot9
+    hostname: springboot
+    restart: unless-stopped
+    ports:
+      - 8087:8087
+    depends_on:
+      - mysqldb
+      - mosquitto
+  angular:
+    image: yassinemchairia/frontcck9:latest
+    container_name: angular_app9
+    hostname: angular_app
+    restart: unless-stopped
+    ports:
+      - 4200:80
+    depends_on:
+      - springboot
+  mosquitto:
+    image: eclipse-mosquitto
+    container_name: mosquitto1
+    hostname: mosquitto
+    restart: unless-stopped
+    ports:
+      - 1883:1883
+    volumes:
+      - mosquitto_data:/mosquitto
+      - ./mosquitto.conf:/mosquitto/config/mosquitto.conf
 volumes:
-  mysql_data:
-  mosquitto_data:
+  mysql_data:
+  mosquitto_data:
