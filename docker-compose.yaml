@@ -14,8 +14,8 @@ services:
     volumes:
       - mysql_data:/var/lib/mysql
   springboot:
-    image: yassinemchairia/bcc9:v9
-    container_name: springboot9
+    image: yassinemchairia/bcc10:v10
+    container_name: springboot10
     hostname: springboot
     restart: unless-stopped
     ports:
@@ -24,8 +24,8 @@ services:
       - mysqldb
       - mosquitto
   angular:
-    image: yassinemchairia/frontcck9:latest
-    container_name: angular_app9
+    image: yassinemchairia/frontcck10:latest
+    container_name: angular_app10
     hostname: angular_app
     restart: unless-stopped
     ports:
