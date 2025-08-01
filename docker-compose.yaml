@@ -5,8 +5,9 @@ services:
     container_name: db_mysql1
     hostname: db_mysql
     restart: unless-stopped
-    ports:
-      - 3306:3306
+
+    ports:
+      - 3306:3306
   
     environment:
       - MYSQL_DATABASE=cckprojet
