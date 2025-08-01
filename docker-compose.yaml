@@ -1,4 +1,4 @@
-version: "3.8"  # Utilisation de la version 3.8 pour les dernières fonctionnalités
+version: "3"
 services:
   mysqldb:
     image: mysql:8
@@ -6,7 +6,7 @@ services:
     hostname: db_mysql
     restart: unless-stopped
     ports:
-      - "3306:3306"
+      - 3306:3306
     environment:
       - MYSQL_DATABASE=cckprojet
       - DATABASE_DRIVER=com.mysql.cj.jdbc.Driver
@@ -24,10 +24,6 @@ services:
     depends_on:
       - mysqldb
       - mosquitto
-    environment:
-      - SPRING_DATASOURCE_URL=jdbc:mysql://db_mysql1:3306/cckprojet?createDatabaseIfNotExist=true&zeroDateTimeBehavior=CONVERT_TO_NULL&serverTimezone=UTC
-      - SPRING_DATASOURCE_USERNAME=root
-      - SPRING_DATASOURCE_PASSWORD=
 
   angular:
     image: yassinemchairia/frontcck7:latest
@@ -41,7 +37,7 @@ services:
 
   mosquitto:
     image: eclipse-mosquitto
-    container_name: mosquitto1  # Aligné avec les logs
+    container_name: mosquitto1
     hostname: mosquitto
     restart: unless-stopped
     ports:
@@ -52,8 +48,7 @@ services:
 
   sensor_simulator:
     build:
-      context: ./python_sensor  
-      dockerfile: Dockerfile
+      context: ./python_sensor  # Répertoire contenant le Dockerfile et le script
     container_name: sensor_simulator
     hostname: sensor_simulator
     restart: unless-stopped
