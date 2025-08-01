@@ -16,8 +16,8 @@ services:
       - mysql_data:/var/lib/mysql
 
   springboot:
-    image: yassinemchairia/bcc6:v6
-    container_name: springboot6
+    image: yassinemchairia/bcc9:v9
+    container_name: springboot9
     hostname: springboot
     restart: unless-stopped
     ports:
@@ -29,8 +29,8 @@ services:
      
   
   angular:
-    image: yassinemchairia/frontcck6:latest
-    container_name: angular_app6
+    image: yassinemchairia/frontcck9:latest
+    container_name: angular_app9
     hostname: angular_app
     restart: unless-stopped
     ports:
