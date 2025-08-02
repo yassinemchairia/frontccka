@@ -28,9 +28,9 @@ export interface Utilisateur {
   providedIn: 'root'
 })
 export class ChatService implements OnDestroy {
-  private wsUrl = 'http://localhost:8087/ws/chat';
-  private apiUrl = 'http://localhost:8087/api/chat';
-  private fileApiUrl = 'http://localhost:8087/api/files';
+  private wsUrl = 'http://192.168.107.129:8087/ws/chat';
+  private apiUrl = 'http://192.168.107.129:8087/api/chat';
+  private fileApiUrl = 'http://192.168.107.129:8087/api/files';
   private stompClient: Client | null = null;
   private messagesSubject = new BehaviorSubject<ChatMessageDTO[]>([]);
   private connectedUsersSubject = new BehaviorSubject<Utilisateur[]>([]);
