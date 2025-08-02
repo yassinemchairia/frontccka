@@ -1,0 +1,104 @@
+<!-- src/app/Chat/chat/chat.component.html -->
+<div class="chat-container">
+  <div class="sidebar">
+    <h3 class="sidebar-header">Contacts</h3>
+    <form [formGroup]="searchForm" class="search-form">
+      <div class="search-box">
+        <input type="text" 
+               formControlName="searchQuery" 
+               placeholder="Rechercher...">
+        <i class="fas fa-search search-icon"></i>
+      </div>
+    </form>
+    <ul class="user-list">
+      <li *ngFor="let user of filteredUsers" 
+          (click)="selectUser(user)" 
+          [class.active]="user === selectedUser"
+          class="user-item">
+        <div class="avatar">{{ user.prenom.charAt(0) }}{{ user.nom.charAt(0) }}</div>
+        <div class="user-info">
+          <span class="name">{{ user.prenom }} {{ user.nom }}</span>
+          <span class="role">{{ user.role }}</span>
+        </div>
+      </li>
+      <li *ngIf="filteredUsers.length === 0" class="no-results">
+        Aucun résultat trouvé
+      </li>
+    </ul>
+  </div>
+  
+  <div class="chat-area">
+    <div class="chat-header" *ngIf="selectedUser">
+      <div class="header-info">
+        <div class="avatar">{{ selectedUser.prenom.charAt(0) }}{{ selectedUser.nom.charAt(0) }}</div>
+        <div>
+          <h3>{{ selectedUser.prenom }} {{ selectedUser.nom }}</h3>
+          <small>En ligne</small>
+        </div>
+      </div>
+    </div>
+    
+    <div class="messages-container" *ngIf="selectedUser; else noUserSelected">
+      <div class="messages">
+        <div *ngFor="let message of messages" 
+             [class.message-sent]="message.senderId === currentUserId"
+ FLOOR [class.message-received]="message.senderId !== currentUserId"
+             class="message">
+          <div class="message-content">
+            <ng-container *ngIf="message.filePath; else textMessage">
+              <div *ngIf="message.fileType?.startsWith('image/')">
+                <img *ngIf="messageImageUrls[message.filePath]" 
+                     [src]="messageImageUrls[message.filePath]" 
+                     alt="Image" 
+                     class="chat-image" />
+                <a (click)="downloadFile(message.filePath, message.fileName)">{{ message.fileName }}</a>
+              </div>
+              <div *ngIf="!message.fileType?.startsWith('image/')">
+                <a (click)="downloadFile(message.filePath, message.fileName)">{{ message.fileName }}</a>
+              </div>
+            </ng-container>
+            <ng-template #textMessage>
+              <p>{{ message.content }}</p>
+            </ng-template>
+            <span class="message-time">{{ message.timestamp | date:'HH:mm' }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <ng-template #noUserSelected>
+      <div class="empty-chat">
+        <div class="empty-icon">
+          <i class="fas fa-comments"></i>
+        </div>
+        <h4>Sélectionnez une conversation</h4>
+        <p>Choisissez un contact pour commencer à discuter</p>
+      </div>
+    </ng-template>
+    
+    <form [formGroup]="chatForm" (ngSubmit)="sendMessage()" *ngIf="selectedUser" class="message-input">
+      <div class="input-group">
+        <input type="text" 
+               formControlName="message" 
+               placeholder="Écrivez votre message..." 
+               class="form-control">
+        <input type="file" 
+               #fileInput 
+               id="fileInput" 
+               style="display: none;" 
+               (change)="onFileSelected($event)" 
+               accept="image/*,.pdf,.doc,.docx">
+        <button type="button" 
+                class="file-button" 
+                (click)="triggerFileInput()">
+          <i class="fas fa-paperclip"></i>
+        </button>
+        <button type="submit" 
+                [disabled]="chatForm.invalid && !chatForm.get('message')?.value" 
+                class="send-button">
+          <i class="fas fa-paper-plane"></i>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
