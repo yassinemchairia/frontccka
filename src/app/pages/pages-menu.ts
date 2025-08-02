@@ -2,7 +2,11 @@ import { NbMenuItem } from '@nebular/theme';
 import { Role } from '../auth/enums';
 
 export const ADMIN_MENU_ITEMS: NbMenuItem[] = [
-  
+  {
+    title: 'Chat',
+    icon: 'message-circle-outline',
+    link: '/pages/chat', // Nouvelle entrée pour le chat
+  },
   {
     title: 'Alertes',
     icon: 'alert-triangle-outline',
@@ -19,7 +23,7 @@ export const ADMIN_MENU_ITEMS: NbMenuItem[] = [
     link: '/pages/capteur-monitoring',
   },
   {
-    title: 'ResolvedAiAlerts',
+    title: 'Alertes AI Résolues',
     icon: 'bar-chart-outline',
     link: '/pages/resolved',
   },
@@ -93,10 +97,11 @@ export const ADMIN_MENU_ITEMS: NbMenuItem[] = [
 ];
 
 export const TECHNICIAN_MENU_ITEMS: NbMenuItem[] = [
+  
   {
-    title: 'IoT Dashboard',
-    icon: 'home-outline',
-    link: '/pages/iot-dashboard',
+    title: 'Chat',
+    icon: 'message-circle-outline',
+    link: '/pages/chat', // Nouvelle entrée pour le chat
   },
   {
     title: 'Mon profil',
