@@ -12,8 +12,8 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { NbEvaIconsModule } from '@nebular/eva-icons';
 import { MatSortModule } from '@angular/material/sort';
-
-import { AuthGuard } from './Service/auth.guard';
+import { RouterModule } from '@angular/router';
+import { CommonModule } from '@angular/common'; 
 import { AdminGuard } from './Service/admin.guard';
 import { AuthService } from './Service/auth.service';
 import { ProfileService } from './Service/profile.service';
@@ -128,7 +128,8 @@ import { RendezVousListComponent } from './rendez-vous/rendez-vous-list/rendez-v
     BrowserAnimationsModule,
     NbEvaIconsModule,
         MatSortModule,
-
+RouterModule, // Nécessaire pour <router-outlet>
+    CommonModule,
     FormsModule,
      NbAlertModule,
     NbSpinnerModule,
