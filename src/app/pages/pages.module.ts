@@ -10,6 +10,8 @@ import { MiscellaneousModule } from './miscellaneous/miscellaneous.module';
 import { NbToastrModule } from '@nebular/theme';
 import { UserSelectionDialogComponent } from '../Chat/user-selection-dialog/user-selection-dialog.component';
 import { ReactiveFormsModule } from '@angular/forms';import { NotificationToastComponent } from '../Notifications/notification-toast/notification-toast.component';
+import { NbLayoutColumnModule } from '@nebular/theme';
+
 @NgModule({
   imports: [
     PagesRoutingModule,
@@ -24,7 +26,8 @@ import { ReactiveFormsModule } from '@angular/forms';import { NotificationToastC
     NbToastrModule.forRoot(),
     NbCardModule,
     NbIconModule,
-    NbListModule
+    NbListModule,
+    NbLayoutColumnModule
 ],
   declarations: [
     PagesComponent,
