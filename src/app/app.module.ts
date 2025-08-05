@@ -31,6 +31,7 @@ import { AjoutInterventionComponent } from './Intervention/ajout-intervention/aj
 import { TechnicienStatsComponent } from './Technicien/technicien-stats/technicien-stats.component';
 import { NgChartsModule } from 'ng2-charts';
 import { MatDividerModule } from '@angular/material/divider';
+import { AuthGuard } from './Service/auth.guard';
 
 import { InterventionTechnicienComponent } from './Intervention/intervention-technicien/intervention-technicien.component';
 import { InterventionCalendarComponent } from './Intervention/intervention-calendar/intervention-calendar.component';
@@ -66,7 +67,6 @@ import { TechnicienStats1Component } from './TechnicienStats1/technicien-stats1/
 import { TechnicienGuard } from './Service/technicien.guard';
 import { RapportTechnicienComponent } from './Rapport/rapport-technicien/rapport-technicien.component';
 import { MatListModule } from '@angular/material/list';
-import { CommonModule } from '@angular/common'; // For ngIf, ngFor, and pipes like currency
 import { NbThemeModule, NbLayoutModule, NbAlertModule, NbSpinnerModule, NbFormFieldModule, NbInputModule, NbButtonModule } from '@nebular/theme';
 import { GestionDisponibilitesComponent } from './GestionDisponibilites/gestion-disponibilites/gestion-disponibilites.component';
 import { PredictionModalComponent } from './Prediction/prediction-modal/prediction-modal.component';
@@ -129,7 +129,6 @@ import { RendezVousListComponent } from './rendez-vous/rendez-vous-list/rendez-v
     NbEvaIconsModule,
         MatSortModule,
 RouterModule, // Nécessaire pour <router-outlet>
-    CommonModule,
     FormsModule,
      NbAlertModule,
     NbSpinnerModule,
