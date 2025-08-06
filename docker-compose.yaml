@@ -14,8 +14,8 @@ services:
     volumes:
       - mysql_data:/var/lib/mysql
   springboot:
-    image: yassinemchairia/bcc11:v11
-    container_name: springboot11
+    image: yassinemchairia/bcc12:v12
+    container_name: springboot12
     hostname: springboot
     restart: unless-stopped
     ports:
@@ -24,8 +24,8 @@ services:
       - mysqldb
       - mosquitto
   angular:
-    image: yassinemchairia/frontcck11:latest
-    container_name: angular_app11
+    image: yassinemchairia/frontcck12:latest
+    container_name: angular_app12
     hostname: angular_app
     restart: unless-stopped
     ports:
@@ -42,6 +42,15 @@ services:
     volumes:
       - mosquitto_data:/mosquitto
       - ./mosquitto.conf:/mosquitto/config/mosquitto.conf
+  sensor-simulator:
+    image: yassinemchairia/sensor-simulator:latest
+    container_name: sensor_simulator
+    hostname: sensor_simulator
+    restart: unless-stopped
+    depends_on:
+      - mosquitto
+    environment:
+      - PYTHONUNBUFFERED=1  # Ensure Python logs are visible in real-time    
 volumes:
   mysql_data:
   mosquitto_data:
