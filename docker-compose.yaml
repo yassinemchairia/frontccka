@@ -44,7 +44,7 @@ services:
       - ./mosquitto.conf:/mosquitto/config/mosquitto.conf
   sensor-simulator:
     image: yassinemchairia/sensor-simulator:latest
-    container_name: sensor_simulator
+    container_name: sensor-simulator
     hostname: sensor_simulator
     restart: unless-stopped
     depends_on:
