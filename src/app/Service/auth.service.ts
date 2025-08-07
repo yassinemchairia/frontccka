@@ -49,7 +49,13 @@ export class AuthService {
         this.storeTokens(response);
         this.loggedIn.next(true);
         this.setUserDetails();
-        this.router.navigate(['/pages/dashboard']);
+        // Redirection en fonction du rôle
+        const role = this.currentUserRole.value;
+        if (role === 'ADMIN') {
+          this.router.navigate(['/pages/capteur-monitoring']);
+        } else if (role === 'TECHNICIEN') {
+          this.router.navigate(['/pages/technicien-stats']);
+        } 
       })
     );
   }
