@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
-import { NbMenuModule, NbLayoutModule, NbSidebarModule, NbCardModule, NbIconModule, NbListModule, NbWindowModule } from '@nebular/theme';
-import { ChatComponent } from '../Chat/chat/chat.component';
+import { NbMenuModule, NbLayoutModule, NbSidebarModule, NbCardModule, NbIconModule, NbListModule } from '@nebular/theme';
+import { ChatComponent } from '../Chat/chat/chat.component'; // Importez le nouveau composant
 import { ThemeModule } from '../@theme/theme.module';
 import { PagesComponent } from './pages.component';
 import { DashboardModule } from './dashboard/dashboard.module';
@@ -9,28 +9,29 @@ import { PagesRoutingModule } from './pages-routing.module';
 import { MiscellaneousModule } from './miscellaneous/miscellaneous.module';
 import { NbToastrModule } from '@nebular/theme';
 import { UserSelectionDialogComponent } from '../Chat/user-selection-dialog/user-selection-dialog.component';
-import { ReactiveFormsModule } from '@angular/forms';
-import { NotificationToastComponent } from '../Notifications/notification-toast/notification-toast.component';
-
+import { ReactiveFormsModule } from '@angular/forms';import { NotificationToastComponent } from '../Notifications/notification-toast/notification-toast.component';
 @NgModule({
   imports: [
     PagesRoutingModule,
-    ReactiveFormsModule, 
+    ReactiveFormsModule, // Required for reactive forms
     ThemeModule,
     NbMenuModule,
-    NbLayoutModule, 
+    DashboardModule,
+    ECommerceModule,
+    MiscellaneousModule,
+    NbLayoutModule,
     NbSidebarModule,
     NbToastrModule.forRoot(),
-    NbCardModule, 
+    NbCardModule,
     NbIconModule,
-    NbListModule,
-    NbWindowModule, 
-  ],
+    NbListModule
+],
   declarations: [
     PagesComponent,
     NotificationToastComponent,
     ChatComponent,
-    UserSelectionDialogComponent,
+        UserSelectionDialogComponent
+
   ],
 })
 export class PagesModule {
