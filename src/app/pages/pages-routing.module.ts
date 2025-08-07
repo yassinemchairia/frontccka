@@ -27,6 +27,7 @@ import { RapportTechnicienComponent } from '../Rapport/rapport-technicien/rappor
 import { GestionDisponibilitesComponent } from '../GestionDisponibilites/gestion-disponibilites/gestion-disponibilites.component';
 import { ResolvedAiAlertsComponent } from '../ResolvedAiAlerts/resolved-ai-alerts/resolved-ai-alerts.component';
 import { RendezVousListComponent } from '../rendez-vous/rendez-vous-list/rendez-vous-list.component';
+import { UserSelectionDialogComponent } from '../Chat/user-selection-dialog/user-selection-dialog.component';
 import { ChatComponent } from '../Chat/chat/chat.component'; // Importez le nouveau composant
 const routes: Routes = [{
   path: '',
