@@ -51,6 +51,17 @@ services:
       - mosquitto
     environment:
       - PYTHONUNBUFFERED=1
+  prediction-technicians:
+    image: yassinemchairia/prediction-technicians:latest
+    container_name: prediction_technicians
+    hostname: prediction_technicians
+    restart: unless-stopped
+    ports:
+      - 5001:5001
+    depends_on:
+      - springboot
+    environment:
+      - PYTHONUNBUFFERED=1
 volumes:
   mysql_data:
   mosquitto_data:
