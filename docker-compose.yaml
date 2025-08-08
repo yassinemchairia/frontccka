@@ -63,7 +63,7 @@ services:
     environment:
       - PYTHONUNBUFFERED=1
   prediction-solution:
-    image: yassinemchairia/prediction-solution:latest
+    image: yassinemchairia/prediction_solution:latest
     container_name: prediction_solution
     hostname: prediction_solution
     restart: unless-stopped
