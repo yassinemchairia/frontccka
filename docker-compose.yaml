@@ -62,6 +62,17 @@ services:
       - springboot
     environment:
       - PYTHONUNBUFFERED=1
+  prediction-solution:
+    image: yassinemchairia/prediction-solution:latest
+    container_name: prediction_solution
+    hostname: prediction_solution
+    restart: unless-stopped
+    ports:
+      - 5000:5000
+    depends_on:
+      - springboot
+    environment:
+      - PYTHONUNBUFFERED=1
 volumes:
   mysql_data:
   mosquitto_data:
