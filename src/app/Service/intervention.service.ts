@@ -57,7 +57,12 @@ export class InterventionService {
     Authorization: token ? `Bearer ${token}` : ''
   });
 }
-
+getAllTechniciens(): Observable<any[]> {
+    return this.http.get<any[]>('http://192.168.107.129:8087/alertes/techniciens', {
+      headers: this.getAuthHeaders()
+    }).pipe(
+      catchError(this.handleError<any[]>('getAllTechniciens', []))
+    );
   getTechniciensAffectes(idInterv: number): Observable<TechnicienDTO[]> {
     return this.http.get<TechnicienDTO[]>(`${this.apiUrl}/${idInterv}/techniciens`, {
       headers: this.getAuthHeaders()
