@@ -41,7 +41,7 @@ export class AjoutInterventionComponent implements OnInit {
   }
 
   chargerTechniciens(): void {
-    this.http.get<any[]>('http://localhost:8087/alertes/techniciens')
+    this.http.get<any[]>('http://192.168.107.129:8087/alertes/techniciens')
       .subscribe(data => this.techniciens = data);
   }
 
