@@ -6,7 +6,7 @@ import { TechnicienDTO } from './technicien-dto.model';
 import { HistoriqueIntervention, HistoriqueInterventionDTO } from './historique-intervention.model';
 import { InterventionDTO } from './InterventionDTO.model';
 import { RapportIntervention } from './R.model';
-import { AuthService } from './auth.service';
+import { AuthService } from './auth.service'; // Import AuthService
 
 export type InterventionStatus = 'EN_COURS' | 'TERMINEE';
 export type InterventionType = 'PREVENTIVE' | 'CORRECTIVE';
@@ -49,21 +49,14 @@ export class InterventionService {
 
   constructor(private http: HttpClient, private authService: AuthService) {}
 
+  // Helper method to add Authorization header
   private getAuthHeaders(): HttpHeaders {
-    const token = this.authService.getAccessToken();
-    return new HttpHeaders({
-      'Content-Type': 'application/json',
-      Authorization: token ? `Bearer ${token}` : ''
-    });
-  }
-
-  getAllTechniciens(): Observable<any[]> {
-    return this.http.get<any[]>('http://192.168.107.129:8087/alertes/techniciens', {
-      headers: this.getAuthHeaders()
-    }).pipe(
-      catchError(this.handleError<any[]>('getAllTechniciens', []))
-    );
-  }
+  const token = this.authService.getAccessToken();
+  return new HttpHeaders({
+    'Content-Type': 'application/json',
+    Authorization: token ? `Bearer ${token}` : ''
+  });
+}
 
   getTechniciensAffectes(idInterv: number): Observable<TechnicienDTO[]> {
     return this.http.get<TechnicienDTO[]>(`${this.apiUrl}/${idInterv}/techniciens`, {
@@ -82,6 +75,7 @@ export class InterventionService {
   }
 
   ajouterIntervention(intervention: any): Observable<any> {
+    // Send request without Authorization header
     return this.http.post(`${this.apiUrl}/ajouter`, intervention, {
       headers: new HttpHeaders({
         'Content-Type': 'application/json'
@@ -137,7 +131,7 @@ export class InterventionService {
     endDate?: Date
   ): Observable<InterventionCalendarEvent[]> {
     const url = `${this.apiUrl}/vvbvtechnicien/${technicienId}`;
-    let params: any = {};
+    let params = {};
     if (startDate && endDate) {
       params = {
         start: this.formatDateForAPI(startDate),
@@ -146,10 +140,7 @@ export class InterventionService {
     } else if (startDate) {
       params = { start: this.formatDateForAPI(startDate) };
     }
-    return this.http.get<InterventionCalendarEvent[]>(url, {
-      headers: this.getAuthHeaders(),
-      params
-    }).pipe(
+    return this.http.get<InterventionCalendarEvent[]>(url, { headers: this.getAuthHeaders(), params }).pipe(
       catchError(this.handleError<InterventionCalendarEvent[]>('getInterventionsForTechnicien', []))
     );
   }
@@ -200,7 +191,7 @@ export class InterventionService {
     );
   }
 
-  getInterventionsByType(startDate?: Date, endDate?: Date): Observable<any> {
+  getInterventionsByType(startDate?: Date | null, endDate?: Date | null): Observable<any> {
     let params: any = {};
     if (startDate && endDate) {
       params.startDate = startDate.toISOString().split('T')[0];
