@@ -24,7 +24,6 @@ export class AjoutInterventionComponent implements OnInit {
   specialite: string = '';
   nomTechnicienIA: string = '';
   dureeEstimee: number = 3; // Valeur par défaut
-  errorMessage: string | null = null; // Added for error handling
 
   constructor(
     private interventionService: InterventionService,
@@ -42,18 +41,8 @@ export class AjoutInterventionComponent implements OnInit {
   }
 
   chargerTechniciens(): void {
-    this.interventionService.getTechniciensAffectes(0) // Using service method, 0 for all technicians
-      .subscribe({
-        next: (data) => {
-          this.techniciens = data;
-          console.log('Techniciens loaded:', this.techniciens);
-        },
-        error: (err) => {
-          this.errorMessage = 'Erreur lors du chargement des techniciens : ' + (err.message || 'Erreur inconnue');
-          console.error('Error loading technicians:', err);
-          alert(this.errorMessage);
-        }
-      });
+    this.http.get<any[]>('http://localhost:8087/alertes/techniciens')
+      .subscribe(data => this.techniciens = data);
   }
 
   onTechnicienChange(event: any): void {
@@ -79,32 +68,22 @@ export class AjoutInterventionComponent implements OnInit {
       priorite: this.intervention.priorite,
       dureeEstimee: this.dureeEstimee
     };
-    console.log('Prediction Data:', predictionData); // Debug
-    console.log('Available Technicians:', this.techniciens); // Debug
+
     this.interventionService.predictTechnicians(predictionData).subscribe({
       next: (response: { status: string; techniciens: number[]; probabilites: number[] }) => {
-        console.log('Prediction Response:', response); // Debug
         if (response.status === 'success') {
-          this.techniciensIA = response.techniciens.map((id, index) => {
-            const tech = this.techniciens.find(t => t.idUser === id);
-            console.log(`Matching ID ${id}:`, tech); // Debug
-            return {
-              idUser: id,
-              probabilite: response.probabilites[index],
-              ...tech
-            };
-          }).filter(t => t.nom);
-          console.log('Techniciens IA:', this.techniciensIA); // Debug
+          this.techniciensIA = response.techniciens.map((id, index) => ({
+            idUser: id,
+            probabilite: response.probabilites[index],
+            ...this.techniciens.find(t => t.idUser === id) // Ajoute nom et spécialité
+          })).filter(t => t.nom); // Filtre les techniciens valides
           const noms = this.techniciensIA.map(t => `${t.nom} (Prob: ${(t.probabilite * 100).toFixed(2)}%)`).join(', ');
           this.nomTechnicienIA = noms || 'Aucun trouvé';
         } else {
           alert('Erreur dans la prédiction: ' + response.status);
         }
       },
-      error: err => {
-        console.error('Prediction Error:', err); // Debug
-        alert('Erreur IA : ' + err.message);
-      }
+      error: err => alert('Erreur IA : ' + err.message)
     });
   }
 
@@ -141,6 +120,7 @@ export class AjoutInterventionComponent implements OnInit {
   }
 
   onModeSelectionChange(): void {
+    // Réinitialiser les techniciens IA si le mode change
     if (this.modeSelection === 'manuel') {
       this.techniciensIA = [];
       this.nomTechnicienIA = '';
