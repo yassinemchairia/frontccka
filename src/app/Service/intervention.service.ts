@@ -43,6 +43,8 @@ interface PredictionResponse {
 })
 export class InterventionService {
   private apiUrl = 'http://192.168.107.129:8087/interventions';
+    private apiUrl1 = 'http://192.168.107.129:8087';
+
   private historiqueApiUrl = 'http://192.168.107.129:8087/api/historique';
   private rapportApiUrl = 'http://192.168.107.129:8087/api/rapport';
   private predictionApiUrl = 'http://192.168.107.129:8087/api/predict';
