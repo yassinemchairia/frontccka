@@ -41,10 +41,19 @@ export class AjoutInterventionComponent implements OnInit {
   }
 
   chargerTechniciens(): void {
-    this.http.get<any[]>('http://192.168.107.129:8087/alertes/techniciens')
-      .subscribe(data => this.techniciens = data);
-  }
-
+  this.interventionService.getAllTechniciens()
+    .subscribe({
+      next: (data) => {
+        this.techniciens = data;
+        console.log('Techniciens loaded:', this.techniciens);
+      },
+      error: (err) => {
+        this.errorMessage = 'Erreur lors du chargement des techniciens : ' + (err.message || 'Erreur inconnue');
+        console.error('Error loading technicians:', err);
+        alert(this.errorMessage);
+      }
+    });
+}
   onTechnicienChange(event: any): void {
     const id = +event.target.value;
     if (event.target.checked) {
