@@ -41,8 +41,17 @@ export class AjoutInterventionComponent implements OnInit {
   }
 
   chargerTechniciens(): void {
-    this.http.get<any[]>('http://localhost:8087/alertes/techniciens')
-      .subscribe(data => this.techniciens = data);
+    this.http.get<any[]>(`${this.interventionService['apiUrl1']}/alertes/techniciens`)
+      .subscribe({
+        next: (data) => {
+          this.techniciens = data;
+          console.log('Techniciens chargés:', this.techniciens); // Debug
+        },
+        error: (err) => {
+          console.error('Erreur lors du chargement des techniciens:', err);
+          alert('Erreur lors du chargement des techniciens. Veuillez réessayer.');
+        }
+      });
   }
 
   onTechnicienChange(event: any): void {
