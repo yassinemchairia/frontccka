@@ -19,10 +19,10 @@ export interface Intervention1DTO {
 })
 export class AlertService {
   private apiUrl = 'http://192.168.107.129:8087/alertes';
-
+private flaskApiUrl = 'http://prediction_solution:5000/predict_solution';
   constructor(private http: HttpClient) {}
 
-  predictSolution(alerte: Alerte): Observable<{ solution: string; similar_alertes: any[] }> {
+ predictSolution(alerte: Alerte): Observable<{ solution: string; similar_alertes: any[] }> {
     const payload = {
       typePanne: alerte.typePanne,
       niveauGravite: alerte.niveauGravite,
@@ -31,7 +31,7 @@ export class AlertService {
       emplacement: alerte.emplacement,
       description: alerte.description || '',
     };
-    return this.http.post<{ solution: string; similar_alertes: any[] }>(`${this.apiUrl}/predict-solution`, payload);
+    return this.http.post<{ solution: string; similar_alertes: any[] }>(this.flaskApiUrl, payload);
   }
   createIntervention(idAlerte: number): Observable<any> {
     return this.http.post(`${this.apiUrl}/predict-and-create-intervention/${idAlerte}`, {});
